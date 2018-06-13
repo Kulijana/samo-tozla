@@ -10,14 +10,10 @@ public class ClientApp extends JFrame {
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception ex)
-		{
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		JFrame frame = new ClientApp();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(640, 480);
-		frame.setTitle("DVD EE");
-		frame.setVisible(true);
+		JFrame frame = new RegistrationFrame();
 	}
 
 }

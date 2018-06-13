@@ -22,7 +22,6 @@ public class Listing implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.MERGE)
 	@PrimaryKeyJoinColumn
-	@Column(name="OWNER")
 	private Party owner;
 	
 	@Column(name="ACTIVE")

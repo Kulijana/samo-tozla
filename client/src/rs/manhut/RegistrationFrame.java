@@ -1,27 +1,36 @@
 package rs.manhut;
 
 import javax.imageio.ImageIO;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import rs.manhut.beans.PartyDAOI;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Hashtable;
 
-public class RegistrationFrame extends JFrame{
+public class RegistrationFrame extends JFrame implements ActionListener {
 
 
     private BufferedImage avatar;
 
     private JPanel mainPanel;
     private JPanel gridPanel;
-    private JTextField mailTextField;
-    private JTextField nameSurnameTextField;
+    private JTextField emailTextField;
+    private JTextField lastNameTextField;
     private JTextField descriptionTextField;
-    private JTextField usernameTextField;
+    private JTextField firstNameTextField;
+    private JPasswordField passwordField;
     private JButton avatarButton;
     private JButton registerButton;
+    
+    private PartyDAOI partyDAO;
 
     public RegistrationFrame(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,12 +48,7 @@ public class RegistrationFrame extends JFrame{
 
         registerButton = new JButton("Register");
 
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO add the data to DB, close this frame, open the next frame, and send the needed information to it(name,avatar, etc.)
-            }
-        });
+        registerButton.addActionListener(this);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(registerButton);
@@ -56,23 +60,27 @@ public class RegistrationFrame extends JFrame{
     }
 
     private void initGridPanel(){
-        gridPanel = new JPanel(new GridLayout(5,2));
+        gridPanel = new JPanel(new GridLayout(6,2));
         gridPanel.add(new JLabel("Email:"));
-        mailTextField = new JTextField();
-        mailTextField.setPreferredSize(new Dimension(150, 40));
-        gridPanel.add(mailTextField);
-        gridPanel.add(new JLabel("Name and surname:"));
-        nameSurnameTextField = new JTextField();
-        gridPanel.add(nameSurnameTextField);
+        emailTextField = new JTextField();
+        emailTextField.setPreferredSize(new Dimension(150, 40));
+        gridPanel.add(emailTextField);
+        gridPanel.add(new JLabel("Password:"));
+        passwordField = new JPasswordField();
+        passwordField.setEchoChar('*');
+        gridPanel.add(passwordField);
+        gridPanel.add(new JLabel("First Name:"));
+        firstNameTextField = new JTextField();
+        gridPanel.add(firstNameTextField);
+        gridPanel.add(new JLabel("Last Name:"));
+        lastNameTextField = new JTextField();
+        gridPanel.add(lastNameTextField);
         gridPanel.add(new JLabel("Description:"));
         descriptionTextField = new JTextField();
         gridPanel.add(descriptionTextField);
-        gridPanel.add(new JLabel("Username:"));
-        usernameTextField = new JTextField();
-        gridPanel.add(usernameTextField);
-
         avatarButton = new JButton();
         avatarButton.setText("Select your avatar");
+        
         avatarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,7 +104,28 @@ public class RegistrationFrame extends JFrame{
         });
 
         gridPanel.add(avatarButton);
-
     }
-
+    
+    private PartyDAOI getPartyDAO() throws NamingException {
+		if (partyDAO == null) {
+			InitialContext ctx = new InitialContext();
+			String name = "ejb:/OOP2_SAMO_TOZLA//PartyDAO!" + PartyDAOI.class.getName();
+			partyDAO = (PartyDAOI) ctx.lookup(name);
+		}
+		return partyDAO;
+	}
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    	String email = emailTextField.getText(),
+    			firstName = firstNameTextField.getText(),
+    			lastName = lastNameTextField.getText(),
+    			password = passwordField.getPassword().toString(),
+    			desc = descriptionTextField.getText();
+    	try {
+    		this.getPartyDAO().register(email, password, firstName, lastName, desc, "");
+    	} catch (NamingException ne) {
+    		ne.printStackTrace();
+    	}
+    }
 }
