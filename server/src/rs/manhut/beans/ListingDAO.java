@@ -77,7 +77,11 @@ public class ListingDAO implements ListingDAOI {
 										String material,
 										String color,
 										Boolean active) {
-		String nameExp = "%" + name + "%";
+		String nameExp;
+		if(name == null)
+			nameExp = name;
+		else
+			nameExp = "%" + name + "%";
 		
 		return em.createNamedQuery("Listing.getAll", Listing.class)
 									.setParameter("material", material)

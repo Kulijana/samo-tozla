@@ -29,12 +29,13 @@ public class InsertDefaultData {
 	public void postConstruct() {
 		Party p = addParty("example@gmail.com", "example", "John", "Doe", "I am an example John Doe", "");
 		
+		em.persist(p);
+		
 		createListing(p, "Listing1", "zlato", "zuto", 200.00, "nekakva descripcija");
 		createListing(p, "Listing2", "zlato", "zuto", 400.00, "nekakva descripcija");
 		createListing(p, "Listing3", "srebro", "zeleno", 300.00, "nekakva descripcija");
 		createListing(p, "Listing4", "srebro", "sivo", 500.00, "nekakva descripcija");
 		
-		em.persist(p);
 	}
 	
 	private Party addParty(String email, String pwd, String firstName, String lastName, String desc, String avatar)
@@ -66,7 +67,7 @@ public class InsertDefaultData {
 		Listing l = getListingByName(name, owner);
 		
 		if(l != null)
-			throw new IllegalArgumentException("You already have a listing with the name: " + name);
+			return l;
 		
 		l = new Listing();
 		l.setActive(true);
@@ -77,7 +78,9 @@ public class InsertDefaultData {
 		l.setOwner(owner);
 		l.setName(name);
 		
-		em.persist(l);
+		System.out.println(l.getOwner().getId());
+		
+		em.merge(l);
 		
 		return l;
 	}

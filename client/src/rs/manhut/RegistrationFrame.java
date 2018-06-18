@@ -143,11 +143,15 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     	// ALEKSA ovaj deo koda mi je sluzio za testiranje mojih upita, posto se okida na register dugme
     	
     	try {
-			List<Listing> results = this.getListingDAO().getAllListings("Listi", "zlato", null, null);
-			System.out.println("Result count: " + results.size());
-			for(Listing l : results) {
-				System.out.println(l.getName());
+			Party party = this.getPartyDAO().getParty(1L);
+			System.out.println(party.getId());
+			
+			List<Listing> result = this.getListingDAO().getPartyListings(party);
+			
+			for(Listing l : result) {
+				System.out.println(l.getName() + " owner: " + l.getOwner());
 			}
+			
 		} catch (NamingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

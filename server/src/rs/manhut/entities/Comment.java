@@ -23,16 +23,16 @@ public class Comment implements Serializable {
 	@Column(name="ID")
 	private Long id;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
-	@PrimaryKeyJoinColumn
+	@OneToOne
+    @JoinColumn(name = "author_id")
 	private Party author;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
-	@PrimaryKeyJoinColumn
+	@OneToOne
+    @JoinColumn(name = "listing_id")
 	private Listing listing;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
-	@PrimaryKeyJoinColumn
+	@OneToOne
+    @JoinColumn(name = "parent_id")
 	private Comment parentComment;
 	
 	@Column(name="TEXT")

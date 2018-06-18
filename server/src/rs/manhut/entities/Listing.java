@@ -31,8 +31,8 @@ public class Listing implements Serializable {
 	@Column(name="NAME")
 	private String name;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
-	@PrimaryKeyJoinColumn
+	@OneToOne
+    @JoinColumn(name = "owner_id")
 	private Party owner;
 	
 	@Column(name="ACTIVE")

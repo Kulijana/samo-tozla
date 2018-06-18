@@ -21,12 +21,12 @@ public class Bid implements Serializable {
 	@Column(name="ID")
 	private Long id;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
-	@PrimaryKeyJoinColumn
+	@OneToOne
+    @JoinColumn(name = "listing_id")
 	private Listing listing;
 	
-	@OneToOne(cascade = CascadeType.MERGE)
-	@PrimaryKeyJoinColumn
+	@OneToOne
+    @JoinColumn(name = "bidder_id")
 	private Party bidder;
 	
 	@Column(name="AMOUNT")
