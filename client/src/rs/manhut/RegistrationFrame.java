@@ -140,39 +140,17 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-    	// ALEKSA ovaj deo koda mi je sluzio za testiranje mojih upita, posto se okida na register dugme
-    	
+    	String email = emailTextField.getText(),
+    			firstName = firstNameTextField.getText(),
+    			lastName = lastNameTextField.getText(),
+    			password = passwordField.getPassword().toString(),
+    			desc = descriptionTextField.getText();
     	try {
-			Party party = this.getPartyDAO().getParty(1L);
-			System.out.println(party.getId());
-			
-			List<Listing> result = this.getListingDAO().getPartyListings(party);
-			
-			for(Listing l : result) {
-				System.out.println(l.getName() + " owner: " + l.getOwner());
-			}
-			
-		} catch (NamingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	
-    	// Ovde mu je kraj, znaci mozes sve ovo izmedju dva komentara da obrises
-    	
-    	
-    	
-    	
-    	
-    	
-//    	String email = emailTextField.getText(),
-//    			firstName = firstNameTextField.getText(),
-//    			lastName = lastNameTextField.getText(),
-//    			password = passwordField.getPassword().toString(),
-//    			desc = descriptionTextField.getText();
-//    	try {
-//    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
-//    	} catch (NamingException ne) {
-//    		ne.printStackTrace();
-//    	}
+    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
+    		new CreateListingFrame(p, ctx);
+    		this.setVisible(false);
+    	} catch (NamingException ne) {
+    		ne.printStackTrace();
+    	}
     }
 }
