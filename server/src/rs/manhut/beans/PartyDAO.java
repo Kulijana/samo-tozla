@@ -44,7 +44,15 @@ public class PartyDAO implements PartyDAOI {
 			return null;
 	}
 	
-	public Party login(String email, String password) {
+	public Party login(@NotBlank String email, @NotBlank String password) {
+		List<Party> results = em.createNamedQuery("Party.login", Party.class)
+													.setParameter("email", email)
+													.setParameter("password", password)
+													.getResultList();
+		
+		if(!results.isEmpty())
+			results.get(0);
+		
 		return null;
 	}
 	

@@ -13,7 +13,8 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "Party.getById", query = "SELECT p FROM Party p WHERE p.id = :id"),
-	@NamedQuery(name = "Party.getByEmail", query = "SELECT p FROM Party p WHERE p.email = :email")
+	@NamedQuery(name = "Party.getByEmail", query = "SELECT p FROM Party p WHERE p.email = :email"),
+	@NamedQuery(name = "Party.login", query = "SELECT p FROM Party p WHERE p.email = :email AND p.password = :password")
 })
 public class Party implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -13,7 +13,7 @@ public interface PartyDAOI {
 	
 	Party getParty(@NotBlank String email);
 	
-	Party login(String email, String password);
+	Party login(@NotBlank String email, @NotBlank String password);
 	
 	Party register(@NotBlank String email,
 					@NotBlank String password, 
