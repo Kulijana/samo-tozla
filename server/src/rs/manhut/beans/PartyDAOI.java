@@ -1,20 +1,24 @@
 package rs.manhut.beans;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import rs.manhut.entities.Party;
 
 public interface PartyDAOI {
 	
 
-	Party getParty(Long id);
+	Party getParty(@NotNull Long id);
 	
-	Party getParty(String email);
+	Party getParty(@NotBlank String email);
 	
-	boolean login(String email, String password);
+	Party login(String email, String password);
 	
-	boolean register(String email,
-					String password, 
-					String firstname, 
-					String lastname, 
-					String description, 
-					String avatar);
+	Party register(@NotBlank String email,
+					@NotBlank String password, 
+					@NotBlank String firstname, 
+					@NotBlank String lastname, 
+					@NotBlank String description, 
+					@NotBlank String avatar);
 }

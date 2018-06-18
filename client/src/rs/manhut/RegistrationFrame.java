@@ -1,19 +1,24 @@
 package rs.manhut;
 
 import javax.imageio.ImageIO;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import rs.manhut.beans.ListingDAOI;
 import rs.manhut.beans.PartyDAOI;
+import rs.manhut.entities.Listing;
+import rs.manhut.entities.Party;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.Properties;
+import java.util.List;
 
 public class RegistrationFrame extends JFrame implements ActionListener {
 
@@ -31,8 +36,19 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     private JButton registerButton;
     
     private PartyDAOI partyDAO;
+    private ListingDAOI listingDAO;
+    
+    private InitialContext ctx;
 
     public RegistrationFrame(){
+    	try {
+			Properties properties = new Properties();
+			properties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+			ctx = new InitialContext(properties);
+    	} catch (NamingException ne) {
+    		ne.printStackTrace();
+    	}
+    	
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600,300);
         this.setTitle("Registration");
@@ -108,24 +124,51 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     
     private PartyDAOI getPartyDAO() throws NamingException {
 		if (partyDAO == null) {
-			InitialContext ctx = new InitialContext();
-			String name = "ejb:/OOP2_SAMO_TOZLA//PartyDAO!" + PartyDAOI.class.getName();
+			String name = "ejb:/samo-tozla//PartyDAO!" + PartyDAOI.class.getName();
 			partyDAO = (PartyDAOI) ctx.lookup(name);
 		}
 		return partyDAO;
 	}
     
+    private ListingDAOI getListingDAO() throws NamingException {
+    	if(listingDAO == null) {
+			String name = "ejb:/samo-tozla//ListingDAO!" + ListingDAOI.class.getName();
+			listingDAO = (ListingDAOI) ctx.lookup(name);
+    	}
+    	return listingDAO;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-    	String email = emailTextField.getText(),
-    			firstName = firstNameTextField.getText(),
-    			lastName = lastNameTextField.getText(),
-    			password = passwordField.getPassword().toString(),
-    			desc = descriptionTextField.getText();
+    	// ALEKSA ovaj deo koda mi je sluzio za testiranje mojih upita, posto se okida na register dugme
+    	
     	try {
-    		this.getPartyDAO().register(email, password, firstName, lastName, desc, "");
-    	} catch (NamingException ne) {
-    		ne.printStackTrace();
-    	}
+			List<Listing> results = this.getListingDAO().getAllListings("Listi", "zlato", null, null);
+			System.out.println("Result count: " + results.size());
+			for(Listing l : results) {
+				System.out.println(l.getName());
+			}
+		} catch (NamingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+    	// Ovde mu je kraj, znaci mozes sve ovo izmedju dva komentara da obrises
+    	
+    	
+    	
+    	
+    	
+    	
+//    	String email = emailTextField.getText(),
+//    			firstName = firstNameTextField.getText(),
+//    			lastName = lastNameTextField.getText(),
+//    			password = passwordField.getPassword().toString(),
+//    			desc = descriptionTextField.getText();
+//    	try {
+//    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
+//    	} catch (NamingException ne) {
+//    		ne.printStackTrace();
+//    	}
     }
 }

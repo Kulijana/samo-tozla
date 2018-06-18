@@ -1,7 +1,6 @@
 package rs.manhut.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.*;
 
@@ -10,6 +9,15 @@ import javax.persistence.*;
  *
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Listing.getById", query = "SELECT l FROM Listing l WHERE l.id = :id"),
+	@NamedQuery(name = "Listing.getByName", query = "SELECT l FROM Listing l WHERE l.name LIKE :name AND l.owner.id = :ownerId"),
+	@NamedQuery(name = "Listing.getByParty", query = "SELECT l FROM Listing l WHERE l.owner.id = :ownerId"),
+	@NamedQuery(name = "Listing.getAll", query = "SELECT l FROM Listing l WHERE (:material IS NULL OR l.material LIKE :material) AND "
+												+ "(:color IS NULL OR l.color LIKE :color) AND "
+												+ "(:active IS NULL OR l.active = :active) AND "
+												+ "(:name IS NULL OR (l.name LIKE :name))")
+})
 public class Listing implements Serializable {
 
 	
@@ -19,6 +27,9 @@ public class Listing implements Serializable {
 	@GeneratedValue
 	@Column(name="ID")
 	private Long id;
+	
+	@Column(name="NAME")
+	private String name;
 	
 	@OneToOne(cascade = CascadeType.MERGE)
 	@PrimaryKeyJoinColumn
@@ -34,7 +45,7 @@ public class Listing implements Serializable {
 	private String color;
 	
 	@Column(name="START_PRICE")
-	private BigDecimal startPrice;
+	private Double startPrice;
 	
 	@Column(name="DESC")
 	private String description;
@@ -75,11 +86,11 @@ public class Listing implements Serializable {
 		this.color = color;
 	}
 
-	public BigDecimal getStartPrice() {
+	public Double getStartPrice() {
 		return startPrice;
 	}
 
-	public void setStartPrice(BigDecimal startPrice) {
+	public void setStartPrice(Double startPrice) {
 		this.startPrice = startPrice;
 	}
 
@@ -97,6 +108,14 @@ public class Listing implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

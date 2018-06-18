@@ -10,7 +10,11 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
 @Singleton
@@ -24,6 +28,11 @@ public class InsertDefaultData {
 	@PostConstruct
 	public void postConstruct() {
 		Party p = addParty("example@gmail.com", "example", "John", "Doe", "I am an example John Doe", "");
+		
+		createListing(p, "Listing1", "zlato", "zuto", 200.00, "nekakva descripcija");
+		createListing(p, "Listing2", "zlato", "zuto", 400.00, "nekakva descripcija");
+		createListing(p, "Listing3", "srebro", "zeleno", 300.00, "nekakva descripcija");
+		createListing(p, "Listing4", "srebro", "sivo", 500.00, "nekakva descripcija");
 		
 		em.persist(p);
 	}
@@ -45,6 +54,44 @@ public class InsertDefaultData {
 		p.setDescription(desc);
 		p.setPassword(sha1(pwd.getBytes()));
 		return p;
+	}
+	
+	
+	public Listing createListing(@NotNull Party owner,
+								@NotBlank String name,
+								@NotBlank String material,
+								@NotBlank String color,
+								@NotNull Double startingPrice,
+								@NotBlank String description) throws IllegalArgumentException {
+		Listing l = getListingByName(name, owner);
+		
+		if(l != null)
+			throw new IllegalArgumentException("You already have a listing with the name: " + name);
+		
+		l = new Listing();
+		l.setActive(true);
+		l.setColor(color);
+		l.setDescription(description);
+		l.setStartPrice(startingPrice);
+		l.setMaterial(material);
+		l.setOwner(owner);
+		l.setName(name);
+		
+		em.persist(l);
+		
+		return l;
+	}
+	
+	public Listing getListingByName(@NotBlank String name, @NotNull Party party) {
+		List<Listing> listings = em.createNamedQuery("Listing.getByName", Listing.class)
+									.setParameter("name", name)
+									.setParameter("ownerId", party.getId())
+									.getResultList();
+		
+		if(!listings.isEmpty())
+			return listings.get(0);
+		
+		return null;
 	}
 	
 	public static String sha1(byte[] bytes) {

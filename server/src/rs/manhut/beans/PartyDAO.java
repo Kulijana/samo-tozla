@@ -9,57 +9,56 @@ import java.util.List;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import javax.persistence.PersistenceContext;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 
 @Stateless
 @Remote(PartyDAOI.class)
 public class PartyDAO implements PartyDAOI {
 	
-	@javax.persistence.PersistenceContext(name = "OOP2_SAMO_TOZLA")
+	@PersistenceContext(name = "OOP2_SAMO_TOZLA")
 	private EntityManager em;
 	
-	public Party getParty(Long id) {
-		if(id != null) {
-			List<Party> pList = em.createNamedQuery("Party.getById", Party.class)
-					.setParameter("id", id)
-					.getResultList();
-			
-			if (!pList.isEmpty())
-				return pList.get(0);
-			else
-				return null;
-		}
+	public Party getParty(@NotNull Long id) {
+		List<Party> pList = em.createNamedQuery("Party.getById", Party.class)
+				.setParameter("id", id)
+				.getResultList();
+		
+		if (!pList.isEmpty())
+			return pList.get(0);
+		else
+			return null;
+	}
+	
+	public Party getParty(@NotBlank String email) {
+		List<Party> pList = em.createNamedQuery("Party.getByEmail", Party.class)
+				.setParameter("email", email)
+				.getResultList();
+		
+		if (!pList.isEmpty())
+			return pList.get(0);
+		else
+			return null;
+	}
+	
+	public Party login(String email, String password) {
 		return null;
 	}
 	
-	public Party getParty(String email) {
-		if(email != null) {
-			List<Party> pList = em.createNamedQuery("Party.getByEmail", Party.class)
-					.setParameter("email", email)
-					.getResultList();
-			
-			if (!pList.isEmpty())
-				return pList.get(0);
-			else
-				return null;
-		}
-		return null;
-	}
-	
-	public boolean login(String email, String password) {
-		return false;
-	}
-	
-	public boolean register(String email,
-					String password, 
-					String firstName, 
-					String lastName, 
-					String description, 
-					String profilePicture) throws IllegalArgumentException {
+	public Party register(@NotBlank String email,
+					@NotBlank String password, 
+					@NotBlank String firstName, 
+					@NotBlank String lastName, 
+					@NotBlank String description, 
+					@NotBlank String profilePicture) throws IllegalArgumentException {
 		Party p = getParty(email);
 		if(p != null)
 			throw new IllegalArgumentException("User with email \"" + email + "\" already exists.");
 		
+		p = new Party();	
 		p.setEmail(email);
 		p.setFirstName(firstName);
 		p.setLastName(lastName);
@@ -68,7 +67,7 @@ public class PartyDAO implements PartyDAOI {
 		p.setProfilePicture(profilePicture);
 		
 		em.persist(p);
-		return true;
+		return p;
 	}
 	
 	public static String sha1(byte[] bytes) {
