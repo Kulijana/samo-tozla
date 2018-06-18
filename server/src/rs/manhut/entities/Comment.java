@@ -8,6 +8,12 @@ import javax.persistence.*;
  *
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Comment.getByAuthor", query = "SELECT c FROM Comment c WHERE c.author.id = :authorId"),
+	@NamedQuery(name = "Comment.getByListing", query = "SELECT c FROM Comment c WHERE c.listing.id = :listingId"),
+	@NamedQuery(name = "Comment.getRootComments", query = "SELECT c FROM Comment c WHERE c.listing.id = :listingId AND c.parentComment IS NULL"),
+	@NamedQuery(name = "Comment.getChildComments", query = "SELECT c FROM Comment c WHERE c.parentComment.id = :parentCommentId")
+})
 public class Comment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
