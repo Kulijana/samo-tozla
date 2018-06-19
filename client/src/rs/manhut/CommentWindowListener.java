@@ -6,10 +6,16 @@ import java.awt.event.WindowListener;
 public class CommentWindowListener implements WindowListener {
 
 	private ListingPanel listingPanel;
+	private CommentComponent commentComponent;
 	
 	public CommentWindowListener(ListingPanel lp) {
 		super();
 		listingPanel = lp;
+	}
+	
+	public CommentWindowListener(CommentComponent commentComponent) {
+		super();
+		this.commentComponent = commentComponent;
 	}
 	
 	@Override
@@ -20,7 +26,10 @@ public class CommentWindowListener implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		listingPanel.refreshComments();
+		if(this.listingPanel != null)
+			listingPanel.refreshComments();
+		if(this.commentComponent != null)
+			commentComponent.refreshChildComments();
 	}
 
 	@Override
