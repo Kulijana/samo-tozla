@@ -23,6 +23,7 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 	private JTextField materialTextField;
 	private JTextField colorTextField;
 	private JTextField startPriceTextField;
+	private JTextField typeTextField;
 	private JTextArea descriptionTextArea;
 	
 	private Party party;
@@ -57,6 +58,9 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		this.add(new JLabel("Start price:"));
 		startPriceTextField = new JTextField();
 		this.add(startPriceTextField);
+		this.add(new JLabel("Jewelry type:"));
+		typeTextField = new JTextField();
+		this.add(typeTextField);
 		this.add(new JLabel("Description:"));
 		descriptionTextArea = new JTextArea();
 		this.add(descriptionTextArea);
@@ -84,9 +88,10 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		String color = this.colorTextField.getText();
 		double startPrice = Double.valueOf(this.startPriceTextField.getText());
 		String description = this.descriptionTextArea.getText();
+		String type = this.typeTextField.getText();
 		
 		try {
-			Listing listing = this.getListingDAO().createListing(this.party, name, material, color, startPrice, description);
+			Listing listing = this.getListingDAO().createListing(this.party, name, material, type, color, startPrice, description);
 			// TODO ZATVORI OVAJ JFRAME ILI VRATI NAZAD ILI IZBACI DIALOG KAO EEEJ CREATED JE...
 		} catch (NamingException e1) {
 			e1.printStackTrace();

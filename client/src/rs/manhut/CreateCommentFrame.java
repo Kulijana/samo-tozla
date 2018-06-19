@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -12,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import com.sun.glass.ui.Window;
 
 import rs.manhut.beans.CommentDAOI;
 import rs.manhut.entities.Comment;
@@ -34,10 +37,25 @@ public class CreateCommentFrame extends JFrame implements ActionListener {
 		this.listing = parentComment.getListing();
 		this.party = party;
 		
-
+		this.setTitle("Reply to " + parentComment.getAuthor().getFirstName() + " " + parentComment.getAuthor().getLastName());
+		
+		createComponents();
+	}
+	
+	public CreateCommentFrame(Party party, Listing listing, InitialContext ctx) {
+		this.ctx = ctx;
+		this.parentComment = null;
+		this.listing = listing;
+		this.party = party;
+		
+		this.setTitle("Comment on \"" + listing.getName() + "\" listing");
+		
+		createComponents();
+	}
+	
+	private void createComponents() {
 		this.setSize(400, 300);
 		this.setLayout(new GridBagLayout());
-		this.setTitle("Reply to " + parentComment.getAuthor().getFirstName() + " " + parentComment.getAuthor().getLastName());
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(10, 10, 10, 10);
@@ -96,8 +114,7 @@ public class CreateCommentFrame extends JFrame implements ActionListener {
 				else
 					this.getCommentDAO().addRootComment(this.listing, this.party, this.commentTextArea.getText());
 				
-				this.setVisible(false);
-				this.dispose();
+				this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 			} catch (NamingException ne) {
 				ne.printStackTrace();
 			}

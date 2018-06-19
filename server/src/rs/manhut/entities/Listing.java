@@ -1,5 +1,6 @@
 package rs.manhut.entities;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -39,10 +40,16 @@ public class Listing implements Serializable {
 	private Boolean active;
 	
 	@Column(name="MATERIAL")
-	private String material;
+	@Enumerated(EnumType.STRING)
+	private MaterialType material;
 	
 	@Column(name="COLOR")
-	private String color;
+	@Enumerated(EnumType.STRING)
+	private JewelryColor color;
+	
+	@Column(name="JEWELRY_TYPE")
+	@Enumerated(EnumType.STRING)
+	private JewelryType type;
 	
 	@Column(name="START_PRICE")
 	private Double startPrice;
@@ -70,20 +77,28 @@ public class Listing implements Serializable {
 		this.active = active;
 	}
 
-	public String getMaterial() {
+	public MaterialType getMaterial() {
 		return material;
 	}
 
-	public void setMaterial(String material) {
+	public void setMaterial(MaterialType material) {
 		this.material = material;
 	}
+	
+	public void setMaterial(String material) {
+		this.material = MaterialType.valueOf(material);
+	}
 
-	public String getColor() {
+	public JewelryColor getColor() {
 		return color;
 	}
 
-	public void setColor(String color) {
+	public void setColor(JewelryColor color) {
 		this.color = color;
+	}
+	
+	public void setColor(String color) {
+		this.color = JewelryColor.valueOf(color);
 	}
 
 	public Double getStartPrice() {
@@ -118,6 +133,67 @@ public class Listing implements Serializable {
 		this.name = name;
 	}
 	
+	public JewelryType getType() {
+		return type;
+	}
+
+	public void setType(JewelryType type) {
+		this.type = type;
+	}
 	
+	public void setType(String type) {
+		this.type = JewelryType.valueOf(type);
+	}
+
+
+
+	public enum JewelryColor {
+		YELLOW(255, 236, 94),
+		RED(255, 75, 15),
+		BLACK(40, 40, 40),
+		GREY(160, 160, 160),
+		GREEN(37, 221, 80),
+		BLUE(94, 190, 255),
+		PURPLE(155, 112, 255),
+		PINK(255, 181, 250);
+		
+		private final int r;
+	    private final int g;
+	    private final int b;
+	    private final String rgb;
+
+	    private JewelryColor(final int r,final int g,final int b) {
+	        this.r = r;
+	        this.g = g;
+	        this.b = b;
+	        this.rgb = r + ", " + g + ", " + b;
+	    }
+
+	    public String getRGB() {
+	        return rgb;
+	    }
+
+	    public Color getColor(){
+	        return new Color(r,g,b);
+	    }
+	}
+	
+	public enum MaterialType {
+		GOLD,
+		SILVER,
+		METAL,
+		PLASTIC,
+		PEARL,
+		STONE
+	}
    
+	public enum JewelryType {
+		RING,
+		NECKLACE,
+		EARRING,
+		BRACELET,
+		WATCH,
+		BROOCH,
+		ANKLET
+	}
 }

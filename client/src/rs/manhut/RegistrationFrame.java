@@ -152,7 +152,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     		
     		if(!list.isEmpty()) {
     			this.remove(mainPanel);
-    			this.setSize(1280, 800);
+    			this.setSize(1600, 900);
     			this.add(new ListingPanel(list.get(0).getOwner(), list.get(0), ctx));
     		}
     		

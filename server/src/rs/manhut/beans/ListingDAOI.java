@@ -14,6 +14,7 @@ public interface ListingDAOI {
 	public Listing createListing(@NotNull Party owner,
 								@NotBlank String name,
 								@NotBlank String material,
+								@NotBlank String type,
 								@NotBlank String color,
 								@NotNull Double startingPrice,
 								@NotBlank String description);
