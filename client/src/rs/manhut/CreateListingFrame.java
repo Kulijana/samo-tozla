@@ -1,6 +1,6 @@
 package rs.manhut;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,9 +34,9 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		this.party = party;
 		this.ctx = ctx;
 		
-		this.setSize(600, 800);
+		this.setSize(400, 400);
 		
-		GridLayout layout = new GridLayout(6, 2);
+		GridBagLayout layout = new GridBagLayout();
 		this.setLayout(layout);
 		
 		createComponents();
@@ -45,28 +45,99 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 	}
 	
 	public void createComponents() {
-		this.add(new JLabel("Name:"));
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.ipady = 10;
+		c.insets = new Insets(10, 10,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(new JLabel("Name:"), c);
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.ipady = 10;
+		c.insets = new Insets(10, 0,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
 		nameTextField = new JTextField();
-		this.add(nameTextField);
-		this.add(new JLabel("Material:"));
+		this.add(nameTextField, c);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 1;
+		c.ipady = 10;
+		c.insets = new Insets(10, 10,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(new JLabel("Material:"), c);
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 1;
+		c.ipady = 10;
+		c.insets = new Insets(10, 0,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
 		materialTextField = new JTextField();
-		this.add(materialTextField);
-		this.add(new JLabel("Color:"));
+		this.add(materialTextField,c);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 2;
+		c.ipady = 10;
+		c.insets = new Insets(10, 10,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(new JLabel("Color:"), c);
 		colorTextField = new JTextField();
-		this.add(colorTextField);
-		this.add(new JLabel("Start price:"));
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 2;
+		c.ipady = 10;
+		c.insets = new Insets(10, 0,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(colorTextField, c);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 3;
+		c.weightx = 0.3;
+		c.ipady = 10;
+		c.insets = new Insets(10, 10,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(new JLabel("Start price:"),c);
 		startPriceTextField = new JTextField();
-		this.add(startPriceTextField);
-		this.add(new JLabel("Description:"));
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 3;
+		c.ipady = 10;
+		c.insets = new Insets(10, 0,10,15);
+		c.weightx = 0.7;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(startPriceTextField,c);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 4;
+		c.ipady = 60;
+		c.ipady = 10;
+		c.insets = new Insets(10, 10,10,15);
+		c.gridheight = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(new JLabel("Description:"),c);
 		descriptionTextArea = new JTextArea();
-		this.add(descriptionTextArea);
-		this.add(new JPanel());
-		
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 4;
+		c.ipady = 60;
+		c.ipady = 10;
+		c.gridheight = 3;
+		c.insets = new Insets(10, 0,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(descriptionTextArea,c);
+		//this.add(new JPanel());
+
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 8;
+		c.gridwidth= 2;
 		JButton submitButton = new JButton("Create listing");
 		
 		submitButton.addActionListener(this);
 		
-		this.add(submitButton);
+		this.add(submitButton,c);
 	}
 	
 	private ListingDAOI getListingDAO() throws NamingException {
