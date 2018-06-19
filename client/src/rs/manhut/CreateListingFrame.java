@@ -9,7 +9,6 @@ import javax.naming.NamingException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -23,6 +22,7 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 	private JTextField materialTextField;
 	private JTextField colorTextField;
 	private JTextField startPriceTextField;
+	private JTextField typeTextField;
 	private JTextArea descriptionTextArea;
 	
 	private Party party;
@@ -100,6 +100,7 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		this.add(new JLabel("Start price:"),c);
 		startPriceTextField = new JTextField();
+
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 3;
@@ -110,24 +111,48 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		this.add(startPriceTextField,c);
 		c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 4;
+		c.gridy = 5;
 		c.ipady = 60;
 		c.ipady = 10;
 		c.insets = new Insets(10, 10,10,15);
 		c.gridheight = 3;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		this.add(new JLabel("Description:"),c);
+
+
 		descriptionTextArea = new JTextArea();
 		c = new GridBagConstraints();
 		c.gridx = 1;
-		c.gridy = 4;
-		c.ipady = 60;
+		c.gridy = 5;
 		c.ipady = 10;
 		c.gridheight = 3;
 		c.insets = new Insets(10, 0,10,15);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		this.add(descriptionTextArea,c);
 		//this.add(new JPanel());
+
+//		this.add(startPriceTextField);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 4;
+		c.ipady = 60;
+		c.ipady = 10;
+		c.weightx = 0.3;
+		c.insets = new Insets(10, 10,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(new JLabel("Jewelry type:"),c);
+		typeTextField = new JTextField();
+		c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 4;
+		c.ipady = 10;
+		c.insets = new Insets(10, 0,10,15);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		this.add(typeTextField,c);
+//		this.add(new JLabel("Description:"));
+
+
+
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -155,9 +180,10 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		String color = this.colorTextField.getText();
 		double startPrice = Double.valueOf(this.startPriceTextField.getText());
 		String description = this.descriptionTextArea.getText();
+		String type = this.typeTextField.getText();
 		
 		try {
-			Listing listing = this.getListingDAO().createListing(this.party, name, material, color, startPrice, description);
+			Listing listing = this.getListingDAO().createListing(this.party, name, material, type, color, startPrice, description);
 			// TODO ZATVORI OVAJ JFRAME ILI VRATI NAZAD ILI IZBACI DIALOG KAO EEEJ CREATED JE...
 		} catch (NamingException e1) {
 			e1.printStackTrace();

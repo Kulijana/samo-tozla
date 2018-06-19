@@ -25,6 +25,7 @@ public class ListingDAO implements ListingDAOI {
 	public Listing createListing(@NotNull Party owner,
 								@NotBlank String name,
 								@NotBlank String material,
+								@NotBlank String type,
 								@NotBlank String color,
 								@NotNull Double startingPrice,
 								@NotBlank String description) throws IllegalArgumentException {
@@ -41,6 +42,7 @@ public class ListingDAO implements ListingDAOI {
 		l.setMaterial(material);
 		l.setOwner(owner);
 		l.setName(name);
+		l.setType(type);
 		
 		em.persist(l);
 		

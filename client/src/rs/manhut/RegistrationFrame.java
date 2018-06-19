@@ -146,9 +146,17 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     			password = passwordField.getPassword().toString(),
     			desc = descriptionTextField.getText();
     	try {
-    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
-    		new CreateListingFrame(p, ctx);
-    		this.setVisible(false);
+    		// Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
+    		
+    		List<Listing> list = this.getListingDAO().getAllListings(null, null, null, null);
+    		
+    		if(!list.isEmpty()) {
+    			this.remove(mainPanel);
+    			this.setSize(1600, 900);
+    			this.add(new ListingPanel(list.get(0).getOwner(), list.get(0), ctx));
+    		}
+    		
+    		// this.setVisible(false);
     	} catch (NamingException ne) {
     		ne.printStackTrace();
     	}

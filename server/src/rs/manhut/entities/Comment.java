@@ -1,6 +1,8 @@
 package rs.manhut.entities;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.*;
 
 /**
@@ -40,6 +42,9 @@ public class Comment implements Serializable {
 	
 	@Column(name="READ")
 	private boolean read;
+	
+	@Column(name="CREATED_ON")
+	private Date createdOn;
 	
 	public Comment() {
 		super();
@@ -92,6 +97,12 @@ public class Comment implements Serializable {
 	public Long getId() {
 		return id;
 	}
-   
-	
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
 }

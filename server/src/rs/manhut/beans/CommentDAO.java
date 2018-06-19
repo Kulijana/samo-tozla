@@ -1,5 +1,6 @@
 package rs.manhut.beans;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Remote;
@@ -29,6 +30,7 @@ public class CommentDAO implements CommentDAOI {
 		comment.setParentComment(null);
 		comment.setAuthor(party);
 		comment.setRead(false);
+		comment.setCreatedOn(new Date());
 		
 		em.persist(comment);
 		
@@ -43,6 +45,7 @@ public class CommentDAO implements CommentDAOI {
 		comment.setAuthor(party);
 		comment.setParentComment(parentComment);
 		comment.setRead(false);
+		comment.setCreatedOn(new Date());
 		
 		em.persist(comment);
 		
