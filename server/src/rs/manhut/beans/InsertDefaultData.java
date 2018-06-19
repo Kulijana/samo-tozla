@@ -2,6 +2,7 @@ package rs.manhut.beans;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import rs.manhut.entities.Comment;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
@@ -31,11 +33,50 @@ public class InsertDefaultData {
 		
 		em.persist(p);
 		
-		createListing(p, "Listing1", "zlato", "zuto", 200.00, "nekakva descripcija");
+		Listing l = createListing(p, "Listing1", "zlato", "zuto", 200.00, "nekakva descripcija");
 		createListing(p, "Listing2", "zlato", "zuto", 400.00, "nekakva descripcija");
 		createListing(p, "Listing3", "srebro", "zeleno", 300.00, "nekakva descripcija");
 		createListing(p, "Listing4", "srebro", "sivo", 500.00, "nekakva descripcija");
 		
+		Comment c1 = addRootComment(l, p, "Somee comment \n number 1 \n whatever");
+		addRootComment(l, p, "Somee comment \n number 2 \n whatever");
+		Comment c3 = addRootComment(l, p, "Somee comment \n number 3 \n whatever");
+		addRootComment(l, p, "Somee comment \n number 4 \n whatever");
+		
+		Comment c12 = respondToComment(c1, p, "This is a first response");
+		Comment c13 = respondToComment(c1, p, "This is a first response 2");
+		Comment c32 = respondToComment(c3, p, "This is a first response");
+
+		respondToComment(c12, p, "LETS HOPE THIS WORKS GOOD");
+	}
+	
+	public Comment addRootComment(@NotNull Listing listing, @NotNull Party party, @NotBlank String commentStr) {
+		Comment comment = new Comment();
+		comment.setText(commentStr);
+		comment.setListing(listing);
+		comment.setParentComment(null);
+		comment.setAuthor(party);
+		comment.setRead(false);
+		comment.setCreatedOn(new Date());
+		
+		em.persist(comment);
+		
+		return comment;
+	}
+	
+	
+	public Comment respondToComment(@NotNull Comment parentComment, @NotNull Party party, @NotBlank String commentStr) {
+		Comment comment = new Comment();
+		comment.setText(commentStr);
+		comment.setListing(parentComment.getListing());
+		comment.setAuthor(party);
+		comment.setParentComment(parentComment);
+		comment.setRead(false);
+		comment.setCreatedOn(new Date());
+		
+		em.persist(comment);
+		
+		return comment;
 	}
 	
 	private Party addParty(String email, String pwd, String firstName, String lastName, String desc, String avatar)

@@ -6,18 +6,29 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import rs.manhut.beans.CommentDAOI;
 import rs.manhut.entities.Listing;
+import rs.manhut.entities.Party;
 
 public class ListingPanel extends JPanel {
 	
 	private Listing listing;
+	private Party party;
 	
-	public ListingPanel(Listing l) {
+	private CommentDAOI commentDAO;
+	private InitialContext ctx;
+	
+	public ListingPanel(Party party, Listing l, InitialContext ctx) {
 		listing = l;
+		this.ctx = ctx;
+		this.party = party;
 		
 		this.setLayout(new GridBagLayout());
 		
@@ -93,29 +104,45 @@ public class ListingPanel extends JPanel {
 		panel.setBackground(Color.YELLOW);
 		this.add(panel, c);
 		
-		c = new GridBagConstraints();
-		c.gridx = 2;
-		c.gridy = 0;
-		c.gridheight = 7;
-		c.weightx = 0.3;
-		c.anchor = GridBagConstraints.LINE_START;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		panel = new JPanel();
-		panel.setBackground(Color.BLUE);
-		panel.setLayout(new GridBagLayout());
-		panel.add(new CommentComponent(), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		this.add(panel, c);
+		this.createCommentScrollPane();
 		
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 6;
 		c.gridwidth = 2;
 		c.weighty = 0.6;
-		c.anchor = GridBagConstraints.LINE_START;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.fill = GridBagConstraints.BOTH;
 		panel = new JPanel();
 		panel.setBackground(Color.BLACK);
 		this.add(panel, c);
+	}
+	
+	private CommentDAOI getCommentDAO() throws NamingException {
+    	if(commentDAO == null) {
+			String name = "ejb:/samo-tozla//CommentDAO!" + CommentDAOI.class.getName();
+			commentDAO = (CommentDAOI) ctx.lookup(name);
+    	}
+    	return commentDAO;
+    }
+	
+	private void createCommentScrollPane() {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 0;
+		c.gridheight = 7;
+		c.weightx = 0.3;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		
+		
+		try {
+			JScrollPane scrollPane = new JScrollPane(new CommentPanel(party, this.getCommentDAO().getRootComments(this.listing), 0, ctx));
+			scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+			this.add(scrollPane, c);
+		} catch (NamingException ne) {
+			ne.printStackTrace();
+		}
 	}
 	
 }
