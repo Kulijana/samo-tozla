@@ -100,7 +100,7 @@ public class ProfileFrame extends JFrame {
         }
         //panel.add(new JLabel(new ImageIcon(image)));
         for(Listing listing : listings){
-            panel.add(new ListingPanel(image, 404.00));
+            panel.add(new MinimizedListingPanel(image, 404.00));
         }
         for(int i = 0;i < 14;i++){
             GridBagConstraints c =new GridBagConstraints();
@@ -108,7 +108,7 @@ public class ProfileFrame extends JFrame {
             c.gridy = i/6;
             c.anchor = GridBagConstraints.NORTH;
             c.insets = new Insets(10,10,10,10);
-            panel.add(new ListingPanel(image, 404.00),c);
+            panel.add(new MinimizedListingPanel(image, 404.00),c);
         }
         panel.setVisible(true);
         return panel;

@@ -1,6 +1,6 @@
 package tests;
 
-import rs.manhut.ListingPanel;
+import rs.manhut.MinimizedListingPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class ListingPanelTest {
         }catch(Exception e){
             e.printStackTrace();
         }
-        ListingPanel bid = new ListingPanel(image, 500.00);
+        MinimizedListingPanel bid = new MinimizedListingPanel(image, 500.00);
         frame.add(bid);
 
         frame.setVisible(true);

@@ -8,14 +8,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ListingPanel extends JPanel {
+public class MinimizedListingPanel extends JPanel {
 
 
     //TODO will most likely need an ID of some sort, for easier manipulation of DB when requesting to see the actual auction
     private Image itemImage;
     private Double currentBid;
 
-    public ListingPanel(Image itemImage, Double currentBid){
+    public MinimizedListingPanel(Image itemImage, Double currentBid){
         this.setLayout(new BorderLayout());
         this.itemImage = itemImage;
         this.currentBid = currentBid;
@@ -36,7 +36,7 @@ public class ListingPanel extends JPanel {
         this.add(bidPanel);
     }
 
-    public ListingPanel(Listing listing){
+    public MinimizedListingPanel(Listing listing){
         //TODO change from getStartPrice() to current price and get itemImage from listing
         this.currentBid = listing.getStartPrice();
         //this.itemImage = listing.getImage();
