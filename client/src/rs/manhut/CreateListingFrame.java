@@ -6,11 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import rs.manhut.beans.ListingDAOI;
 import rs.manhut.entities.Listing;
@@ -184,7 +180,7 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		
 		try {
 			Listing listing = this.getListingDAO().createListing(this.party, name, material, type, color, startPrice, description);
-			// TODO ZATVORI OVAJ JFRAME ILI VRATI NAZAD ILI IZBACI DIALOG KAO EEEJ CREATED JE...
+			dispose();
 		} catch (NamingException e1) {
 			e1.printStackTrace();
 		}

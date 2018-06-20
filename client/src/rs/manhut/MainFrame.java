@@ -1,5 +1,7 @@
 package rs.manhut;
 
+import rs.manhut.beans.ListingDAO;
+import rs.manhut.beans.ListingDAOI;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
@@ -30,6 +32,12 @@ public class MainFrame extends JFrame{
     public MainFrame(Party party, InitialContext ctx){
         this.party = party;
         this.ctx = ctx;
+
+        ListingDAOI listingDAOI = new ListingDAO();
+        //TODO integratoin attempt
+        listings = listingDAOI.getAllListings(null,null,null,true);
+
+
         this.setSize(1920,1080);
         this.add(westPanel(), BorderLayout.WEST);
         this.add(northPanel(), BorderLayout.NORTH);
@@ -57,7 +65,6 @@ public class MainFrame extends JFrame{
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO return to the main page
                 ProfileFrame profileFrame = new ProfileFrame(party,ctx);
                 dispose();
 
@@ -140,10 +147,12 @@ public class MainFrame extends JFrame{
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO Fire off a querry
-                //this should get the value from the querry
-                List<Listing> listings1= null;
-                listings = listings1;
+                //TODO attempt of integration, we need to add Jewlery_Type as a parameter  in ListingDAOI
+                ListingDAOI listingDAOI = new ListingDAO();
+                listings = listingDAOI.getAllListings(nameField.getText()
+                        , materialBox.getSelectedItem().toString()
+                        , colorBox.getSelectedItem().toString()
+                , true);
                 centralPanel = generateCentralPanel();
                 //We might need to setVisible again on whole frame, or some similar method, to make the changes visible
 
