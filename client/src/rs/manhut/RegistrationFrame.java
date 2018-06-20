@@ -1,16 +1,14 @@
 package rs.manhut;
 
 import javax.imageio.ImageIO;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import rs.manhut.beans.ListingDAOI;
 import rs.manhut.beans.PartyDAOI;
-import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
 import java.awt.*;
@@ -18,8 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Properties;
-import java.util.List;
 
 public class RegistrationFrame extends JFrame implements ActionListener {
 
@@ -30,7 +26,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     private JPanel gridPanel;
     private JTextField emailTextField;
     private JTextField lastNameTextField;
-    private JTextField descriptionTextField;
+    private JTextArea descriptionTextArea;
     private JTextField firstNameTextField;
     private JPasswordField passwordField;
     private JButton avatarButton;
@@ -44,7 +40,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     	this.ctx = ctx;
     	
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600,300);
+        this.setSize(700,400);
         this.setTitle("Registration");
 
         mainPanel = new JPanel();
@@ -61,7 +57,17 @@ public class RegistrationFrame extends JFrame implements ActionListener {
         registerButton.addActionListener(this);
 
         JPanel buttonPanel = new JPanel();
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoginFrame loginFrame = new LoginFrame(ctx);
+                dispose();
+            }
+        });
         buttonPanel.add(registerButton);
+        buttonPanel.add(cancelButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         this.add(mainPanel);
@@ -71,48 +77,104 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 
     private void initGridPanel(){
         gridPanel = new JPanel(new GridBagLayout());
+
+
+        GridBagConstraints cs = new GridBagConstraints();
+        cs.insets = new Insets(0, 10, 0, 20);
+        cs.fill = GridBagConstraints.HORIZONTAL;
+
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+
+        cs.insets = new Insets(10,0,10,0);
+        cs.gridx = 1;
+        cs.gridy = 3;
+        cs.gridwidth = 1;
+        gridPanel.add(new JLabel("First name: "), cs);
+
+        firstNameTextField = new JTextField(20);
+        firstNameTextField.setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+        cs.insets = new Insets(10,0,10,15);
+        cs.gridx = 2;
+        cs.gridy = 3;
+        cs.gridwidth = 2;
+        gridPanel.add(firstNameTextField, cs);
+
+
+        cs.insets = new Insets(10,0,10,0);
+        cs.gridx = 1;
+        cs.gridy = 5;
+        cs.gridwidth = 1;
+        gridPanel.add(new JLabel("Last name: "), cs);
+
+        lastNameTextField = new JTextField(20);
+        lastNameTextField.setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+        cs.insets = new Insets(10,0,10,15);
+        cs.gridx = 2;
+        cs.gridy = 5;
+        cs.gridwidth = 2;
+        gridPanel.add(lastNameTextField, cs);
+
+        cs.insets = new Insets(10,0,10,0);
+        cs.gridx = 1;
+        cs.gridy = 7;
+        cs.gridwidth = 1;
+        gridPanel.add(new JLabel("E-mail address: "), cs);
+
+        emailTextField = new JTextField(20);
+        emailTextField.setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+        cs.insets = new Insets(10,0,10,15);
+        cs.gridx = 2;
+        cs.gridy = 7;
+        cs.gridwidth = 2;
+        gridPanel.add(emailTextField, cs);
+
+        cs.insets = new Insets(10,0,10,0);
+        cs.gridx = 1;
+        cs.gridy = 11;
+        cs.gridwidth = 1;
+//        cs.weightx = 0.8;
+        gridPanel.add(new JLabel("Password: "), cs);
+
+        passwordField = new JPasswordField(20);
+        passwordField.setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+        cs.insets = new Insets(10,0,10,15);
+        cs.gridx = 2;
+        cs.gridy = 11;
+        cs.gridwidth = 2;
+//        cs.weightx = 0.3;
+        gridPanel.add(passwordField, cs);
+
+        cs.insets = new Insets(10,0,10,0);
+        cs.gridx = 1;
+        cs.gridy = 13;
+        cs.gridwidth = 1;
+        gridPanel.add(new JLabel("Short description: "), cs);
+
+
+        descriptionTextArea = new JTextArea(4,20);
+        descriptionTextArea.setLineWrap(true);
+        descriptionTextArea.setBorder(BorderFactory.createCompoundBorder(border,BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+        cs.insets = new Insets(10,0,10,15);
+        cs.gridx = 2;
+        cs.gridy = 13;
+        cs.gridwidth = 2;
+        gridPanel.add(descriptionTextArea, cs);
+
+
+        cs.gridx = 1;
+        cs.gridy = 15;
+        cs.gridwidth = 1;
+        gridPanel.add(new JLabel("Select your avatar"), cs);
+
+        avatarButton = new JButton("Choose your avatar");
+        cs.gridx = 2;
+        cs.gridy = 15;
+        cs.gridwidth = 1;
+        gridPanel.add(avatarButton, cs);
+
+
         
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.LINE_END;
-        c.insets = new Insets(10, 0, 0, 10);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.3;
-        c.weighty = 1;
-        gridPanel.add(new JLabel("Email:"), c);
-        
-        c.gridy = 1;
-        gridPanel.add(new JLabel("Password:"), c);
-        
-        c.gridy = 3;
-        gridPanel.add(new JLabel("First Name:"), c);
-        
-        c.gridy = 4;
-        gridPanel.add(new JLabel("Last Name:"), c);
-        
-        c.gridy = 5;
-        gridPanel.add(new JLabel("Description:"), c);
-        
-        
-        emailTextField = new JTextField();
-        emailTextField.setPreferredSize(new Dimension(150, 40));
-        gridPanel.add(emailTextField);
-        gridPanel.add(new JLabel("Password:"));
-        passwordField = new JPasswordField();
-        passwordField.setEchoChar('*');
-        gridPanel.add(passwordField);
-        gridPanel.add(new JLabel("First Name:"));
-        firstNameTextField = new JTextField();
-        gridPanel.add(firstNameTextField);
-        gridPanel.add(new JLabel("Last Name:"));
-        lastNameTextField = new JTextField();
-        gridPanel.add(lastNameTextField);
-        gridPanel.add(new JLabel("Description:"));
-        descriptionTextField = new JTextField();
-        gridPanel.add(descriptionTextField);
-        avatarButton = new JButton();
-        avatarButton.setText("Select your avatar");
-        
+
         avatarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,7 +197,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
             }
         });
 
-        gridPanel.add(avatarButton);
+//        gridPanel.add(avatarButton);
     }
     
     private PartyDAOI getPartyDAO() throws NamingException {
@@ -152,7 +214,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     			firstName = firstNameTextField.getText(),
     			lastName = lastNameTextField.getText(),
     			password = String.copyValueOf(passwordField.getPassword()),
-    			desc = descriptionTextField.getText();
+    			desc = descriptionTextArea.getText();
     	try {
     		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
     		if(p != null)

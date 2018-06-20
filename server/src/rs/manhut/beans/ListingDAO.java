@@ -20,8 +20,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import rs.manhut.entities.Bid;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+//import sun.misc.BASE64Decoder;
+//import sun.misc.BASE64Encoder;
 
 @Stateless
 @Remote(ListingDAOI.class)
