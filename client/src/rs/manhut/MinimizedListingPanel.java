@@ -3,6 +3,7 @@ package rs.manhut;
 import rs.manhut.beans.BidDAOI;
 import rs.manhut.entities.Bid;
 import rs.manhut.entities.Listing;
+import rs.manhut.entities.Party;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -27,7 +28,7 @@ public class MinimizedListingPanel extends JPanel {
     private InitialContext ctx;
     private Listing listing;
     
-    public MinimizedListingPanel(Listing l, InitialContext ctx){
+    public MinimizedListingPanel(Listing l, Party p, InitialContext ctx, ListingClickListener listener){
     	this.listing = l;
     	this.ctx = ctx;
         this.setLayout(new GridBagLayout());
@@ -82,8 +83,7 @@ public class MinimizedListingPanel extends JPanel {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO go to listing
-				System.out.println("Clicked image");
+				listener.listingClicked(listing);
 			}
 		});
         
@@ -102,5 +102,9 @@ public class MinimizedListingPanel extends JPanel {
 			bidDAO = (BidDAOI) ctx.lookup(name);
     	}
     	return bidDAO;
+    }
+    
+    public interface ListingClickListener {
+    	void listingClicked(Listing l);
     }
 }

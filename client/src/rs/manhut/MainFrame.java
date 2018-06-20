@@ -1,5 +1,6 @@
 package rs.manhut;
 
+import rs.manhut.MinimizedListingPanel.ListingClickListener;
 import rs.manhut.beans.ListingDAO;
 import rs.manhut.beans.ListingDAOI;
 import rs.manhut.entities.Listing;
@@ -24,7 +25,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ListingClickListener {
 
     private Party party;
     private InitialContext ctx;
@@ -36,6 +37,7 @@ public class MainFrame extends JFrame {
     private List<Listing> listings;
 
     private JPanel centralPanel;
+    private JScrollPane pane;
     
     private ListingDAOI listingDAO;
 
@@ -46,7 +48,7 @@ public class MainFrame extends JFrame {
 
         this.add(westPanel(), BorderLayout.WEST);
         this.add(northPanel(), BorderLayout.NORTH);
-        JScrollPane pane = new JScrollPane();
+        pane = new JScrollPane();
         pane.getVerticalScrollBar().setUnitIncrement(16);
         centralPanel = generateCentralPanel();
         pane.setViewportView(centralPanel);
@@ -99,7 +101,7 @@ public class MainFrame extends JFrame {
         	List<Listing> listings = getListingDAO().getAllListings(null, null, null, null);
         	for(Listing l : listings) {
         		System.out.println(l);
-    			panel.add(new MinimizedListingPanel(l, ctx));
+    			panel.add(new MinimizedListingPanel(l, party, ctx, this));
         	}
         } catch (NamingException ne) {
         	ne.printStackTrace();
@@ -154,16 +156,15 @@ public class MainFrame extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO attempt of integration, we need to add Jewlery_Type as a parameter  in ListingDAOI
                 ListingDAOI listingDAOI = new ListingDAO();
                 listings = listingDAOI.getAllListings(nameField.getText()
                         , materialBox.getSelectedItem().toString()
                         , colorBox.getSelectedItem().toString()
                 , true);
                 centralPanel = generateCentralPanel();
-                //We might need to setVisible again on whole frame, or some similar method, to make the changes visible
-
-
+                pane.setViewportView(centralPanel);
+                pane.validate();
+                pane.repaint();
             }
         });
         panel.add(searchButton,c);
@@ -191,4 +192,14 @@ public class MainFrame extends JFrame {
         c.fill = GridBagConstraints.HORIZONTAL;
         return c;
     }
+
+	@Override
+	public void listingClicked(Listing l) {
+		JFrame frame = new JFrame();
+		frame.setSize(1600, 900);
+		
+		frame.add(new ListingPanel(party, l, ctx));
+		
+		frame.setVisible(true);
+	}
 }

@@ -1,5 +1,6 @@
 package rs.manhut;
 
+import rs.manhut.MinimizedListingPanel.ListingClickListener;
 import rs.manhut.beans.ListingDAO;
 import rs.manhut.beans.ListingDAOI;
 import rs.manhut.beans.PartyDAO;
@@ -19,7 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFrame extends JFrame {
+public class ProfileFrame extends JFrame implements ListingClickListener  {
 
     private Image avatar;
 
@@ -99,7 +100,7 @@ public class ProfileFrame extends JFrame {
         try {
         	listings = getListingDAO().getPartyListings(party);
         	for(Listing l : listings) {
-    			panel.add(new MinimizedListingPanel(l, ctx));
+    			panel.add(new MinimizedListingPanel(l, party, ctx, this));
         	}
         } catch (NamingException ne) {
         	ne.printStackTrace();
@@ -129,4 +130,14 @@ public class ProfileFrame extends JFrame {
     	}
     	return listingDAO;
     }
+    
+    @Override
+	public void listingClicked(Listing l) {
+		JFrame frame = new JFrame();
+		frame.setSize(1600, 900);
+		
+		frame.add(new ListingPanel(party, l, ctx));
+		
+		frame.setVisible(true);
+	}
 }
