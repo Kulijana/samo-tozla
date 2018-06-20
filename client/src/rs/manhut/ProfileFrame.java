@@ -8,6 +8,7 @@ import rs.manhut.entities.Party;
 
 import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -31,6 +32,8 @@ public class ProfileFrame extends JFrame {
     private JTextField category1;
     private JTextField category2;
 
+    private ListingDAOI listingDAO;
+
     public ProfileFrame(Party party, InitialContext ctx){
         this.party = party;
         this.ctx = ctx;
@@ -46,43 +49,17 @@ public class ProfileFrame extends JFrame {
             ex.printStackTrace();
         }
 
-        //TODO replace this with an actual list of listings from the party
-        ListingDAOI listingDAOI = new ListingDAO();
-        listings = listingDAOI.getPartyListings(party);
-
-        this.add(northPanel(), BorderLayout.NORTH);
-
         JScrollPane pane = new JScrollPane();
         pane.setViewportView(centralPanel());
         this.add(pane,BorderLayout.CENTER);
+	
 
+        this.add(northPanel(), BorderLayout.NORTH);
         this.add(southPanel(),BorderLayout.SOUTH);
 
 
         this.setVisible(true);
     }
-//for testing purposes
-//    public ProfileFrame(String username, String nameSurname, Image avatar, List<Listing> listings){
-//        this.username = username;
-//        this.nameSurname = nameSurname;
-//        this.avatar = avatar;
-//        this.listings = listings;
-//
-//        this.setSize(1920,1080);
-//
-//        this.setLayout(new BorderLayout());
-//
-//        this.add(northPanel(), BorderLayout.NORTH);
-//
-//        JScrollPane pane = new JScrollPane();
-//        pane.setViewportView(centralPanel());
-//        this.add(pane,BorderLayout.CENTER);
-//
-//        this.add(southPanel(),BorderLayout.SOUTH);
-//
-//
-//        this.setVisible(true);
-//    }
 
     private JPanel northPanel(){
         JPanel panel = new JPanel();
@@ -105,28 +82,29 @@ public class ProfileFrame extends JFrame {
 
 
     private JPanel centralPanel(){
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
+    	JPanel panel = new JPanel();
+        ModifiedFlowLayout flowLayout= new ModifiedFlowLayout();
+        flowLayout.setHgap(10);
+        flowLayout.setVgap(10);
+        panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        panel.setLayout(flowLayout);
+        
         Image image = null;
         try {
             image = ImageIO.read(new File("./Testing.jpg"));
-
-        }catch(Exception ex){
+        } catch(Exception ex) {
             ex.printStackTrace();
         }
-        //panel.add(new JLabel(new ImageIcon(image)));
-        for(Listing listing : listings){
-            panel.add(new MinimizedListingPanel(listing));
+        
+        try {
+        	listings = getListingDAO().getPartyListings(party);
+        	for(Listing l : listings) {
+    			panel.add(new MinimizedListingPanel(l, ctx));
+        	}
+        } catch (NamingException ne) {
+        	ne.printStackTrace();
         }
-        for(int i = 0;i < 14;i++){
-            GridBagConstraints c =new GridBagConstraints();
-            c.gridx = i%6;
-            c.gridy = i/6;
-            c.anchor = GridBagConstraints.NORTH;
-            c.insets = new Insets(10,10,10,10);
-            panel.add(new MinimizedListingPanel(image, 404.00),c);
-        }
+        
         panel.setVisible(true);
         return panel;
     }
@@ -142,5 +120,13 @@ public class ProfileFrame extends JFrame {
         });
         panel.add(button);
         return panel;
+    }
+    
+    private ListingDAOI getListingDAO() throws NamingException {
+    	if(listingDAO == null) {
+			String name = "ejb:/samo-tozla//ListingDAO!" + ListingDAOI.class.getName();
+			listingDAO = (ListingDAOI) ctx.lookup(name);
+    	}
+    	return listingDAO;
     }
 }

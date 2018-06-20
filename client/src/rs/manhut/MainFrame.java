@@ -94,17 +94,12 @@ public class MainFrame extends JFrame {
         } catch(Exception ex) {
             ex.printStackTrace();
         }
-        //panel.add(new JLabel(new ImageIcon(image)));
-//        for(Listing listing : listings){
-//            panel.add(new MinimizedListingPanel(image, 404.00));
-//        }
+        
         try {
         	List<Listing> listings = getListingDAO().getAllListings(null, null, null, null);
         	for(Listing l : listings) {
-        		if(l.getImage() != null)
-        			panel.add(new MinimizedListingPanel(ImageUtil.decodeToImage(l.getImage()), l.getStartPrice()));
-        		else
-        			panel.add(new MinimizedListingPanel(image, l.getStartPrice()));
+        		System.out.println(l);
+    			panel.add(new MinimizedListingPanel(l, ctx));
         	}
         } catch (NamingException ne) {
         	ne.printStackTrace();

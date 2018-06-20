@@ -19,8 +19,8 @@ public class ListingPanelTest {
         }catch(Exception e){
             e.printStackTrace();
         }
-        MinimizedListingPanel bid = new MinimizedListingPanel(image, 500.00);
-        frame.add(bid);
+//        MinimizedListingPanel bid = new MinimizedListingPanel(image, 500.00);
+//        frame.add(bid);
 
         frame.setVisible(true);
     }
