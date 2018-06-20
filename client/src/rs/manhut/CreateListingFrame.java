@@ -247,7 +247,33 @@ public class CreateListingFrame extends JFrame implements ActionListener {
 		String description = this.descriptionTextArea.getText();
 		String type = (String) this.typeComboBox.getSelectedItem();
 		Double price = 0.0;
-		
+
+		if(name == null || name.isEmpty()){
+			JOptionPane.showMessageDialog(CreateListingFrame.this, "Listing name cannot be empty");
+			return;
+		}
+		if(material == null || material.isEmpty()){
+			JOptionPane.showMessageDialog(CreateListingFrame.this, "Material cannot be empty");
+			return;
+		}
+		if(color == null || color.isEmpty()){
+			JOptionPane.showMessageDialog(CreateListingFrame.this, "Color cannot be empty");
+			return;
+		}
+		if(startPrice == null){
+			JOptionPane.showMessageDialog(CreateListingFrame.this, "Start price cannot be empty");
+			return;
+		}
+		if(type == null || type.isEmpty()){
+			JOptionPane.showMessageDialog(CreateListingFrame.this, "Type cannot be empty");
+			return;
+		}
+		if(avatar == null){
+			JOptionPane.showMessageDialog(CreateListingFrame.this, "Avatar cannot be empty");
+			return;
+		}
+
+
 		if(startPrice instanceof Double)
 			price = (Double) startPrice;
 		if(startPrice instanceof Long)

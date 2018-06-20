@@ -3,6 +3,10 @@ package tests;
 import rs.manhut.MainFrame;
 import rs.manhut.entities.Party;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import java.util.Properties;
+
 public class MainFrameTest {
 
     public static void main(String[] args){
@@ -13,6 +17,15 @@ public class MainFrameTest {
         p.setId(new Long(1));
         p.setProfilePicture("toBeFixed");
         p.setPassword("password");
-        MainFrame frame = new MainFrame(p,null);
+        Properties properties = new Properties();
+        properties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+
+        InitialContext ctx = null;
+        try {
+            ctx = new InitialContext(properties);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        MainFrame frame = new MainFrame(p,ctx);
     }
 }

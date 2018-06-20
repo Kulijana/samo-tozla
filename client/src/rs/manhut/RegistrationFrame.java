@@ -210,20 +210,43 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-    	String email = emailTextField.getText(),
-    			firstName = firstNameTextField.getText(),
-    			lastName = lastNameTextField.getText(),
-    			password = String.copyValueOf(passwordField.getPassword()),
-    			desc = descriptionTextArea.getText();
-    	try {
-    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
-    		if(p != null)
-    			this.showSuccessDialog();
-    		else
-        		JOptionPane.showMessageDialog(this, "A user with the same email exists.", "Could not register", JOptionPane.ERROR_MESSAGE);
-    	} catch (NamingException ne) {
-    		ne.printStackTrace();
-    	}
+        if(firstNameTextField == null || firstNameTextField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(RegistrationFrame.this, "First name cannot be empty");
+            return;
+        }
+        if(lastNameTextField == null || lastNameTextField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(RegistrationFrame.this, "Last name cannot be empty");
+            return;
+        }
+        if(emailTextField == null || emailTextField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(RegistrationFrame.this, "Email address cannot be empty");
+            return;
+        }
+        if(passwordField == null || passwordField.getText().isEmpty()){
+            JOptionPane.showMessageDialog(RegistrationFrame.this, "Password cannot be empty");
+            return;
+        }
+        if(avatar == null ){
+            JOptionPane.showMessageDialog(RegistrationFrame.this, "Please select an avatar");
+            return;
+        }
+
+
+
+        String email = emailTextField.getText(),
+                firstName = firstNameTextField.getText(),
+                lastName = lastNameTextField.getText(),
+                password = String.copyValueOf(passwordField.getPassword()),
+                desc = descriptionTextArea.getText();
+        try {
+            Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
+            if (p != null)
+                this.showSuccessDialog();
+            else
+                JOptionPane.showMessageDialog(this, "A user with the same email exists.", "Could not register", JOptionPane.ERROR_MESSAGE);
+        } catch (NamingException ne) {
+            ne.printStackTrace();
+        }
     }
     
     public void showSuccessDialog() {
@@ -239,6 +262,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     	sd.setLocationRelativeTo(this);
     	sd.setVisible(true);
     }
+
     
     private class SuccessDialog extends JDialog implements ActionListener {
     	
