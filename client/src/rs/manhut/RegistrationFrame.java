@@ -210,6 +210,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if(firstNameTextField == null || firstNameTextField.getText().isEmpty()){
             JOptionPane.showMessageDialog(RegistrationFrame.this, "First name cannot be empty");
             return;
@@ -233,20 +234,20 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 
 
 
-        String email = emailTextField.getText(),
-                firstName = firstNameTextField.getText(),
-                lastName = lastNameTextField.getText(),
-                password = String.copyValueOf(passwordField.getPassword()),
-                desc = descriptionTextArea.getText();
-        try {
-            Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
-            if (p != null)
-                this.showSuccessDialog();
-            else
-                JOptionPane.showMessageDialog(this, "A user with the same email exists.", "Could not register", JOptionPane.ERROR_MESSAGE);
-        } catch (NamingException ne) {
-            ne.printStackTrace();
-        }
+    	String email = emailTextField.getText(),
+    			firstName = firstNameTextField.getText(),
+    			lastName = lastNameTextField.getText(),
+    			password = String.copyValueOf(passwordField.getPassword()),
+    			desc = descriptionTextArea.getText();
+    	try {
+    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, ImageUtil.encodeToString(avatar, "jpg"));
+    		if(p != null)
+    			this.showSuccessDialog();
+    		else
+        		JOptionPane.showMessageDialog(this, "A user with the same email exists.", "Could not register", JOptionPane.ERROR_MESSAGE);
+    	} catch (NamingException ne) {
+    		ne.printStackTrace();
+    	}
     }
     
     public void showSuccessDialog() {

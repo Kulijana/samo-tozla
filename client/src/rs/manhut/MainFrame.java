@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,6 +23,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class MainFrame extends JFrame implements ListingClickListener {
         this.party = party;
         this.ctx = ctx;
         this.setSize(1600, 900);
+        this.setTitle("Search all listings");
 
         this.add(westPanel(), BorderLayout.WEST);
         this.add(northPanel(), BorderLayout.NORTH);
@@ -65,16 +68,15 @@ public class MainFrame extends JFrame implements ListingClickListener {
     private JPanel northPanel(){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        //TODO put the picture from party
-        Image image = null;
-        try {
-            image = ImageIO.read(new File("./Testing.jpg"));
-        }catch(Exception ex){
-            ex.printStackTrace();
+        if(party.getProfilePicture() != null) {
+	        Image image = ImageUtil.decodeToImage(party.getProfilePicture()).getScaledInstance(80, 80, Image.SCALE_DEFAULT);
+	        JLabel avatarLabel = new JLabel(new ImageIcon(image));
+	        avatarLabel.setPreferredSize(new Dimension(80, 80));
+	        panel.add(avatarLabel, BorderLayout.WEST);
         }
-        JLabel avatarLabel = new JLabel(new ImageIcon(image));
-        panel.add(avatarLabel, BorderLayout.WEST);
-        panel.add(new JLabel(party.getFirstName()));
+        
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.add(new JLabel("  " + party.getFirstName() + " " + party.getLastName()));
         JButton backButton = new JButton("Go to profile");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -84,7 +86,6 @@ public class MainFrame extends JFrame implements ListingClickListener {
             }
         });
         panel.add(backButton, BorderLayout.EAST);
-        panel.setBorder(new LineBorder(Color.BLACK, 3));
         return panel;
     }
 

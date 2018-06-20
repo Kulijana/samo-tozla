@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,7 +52,12 @@ public class ListingPanel extends JPanel {
 		c.anchor = GridBagConstraints.CENTER;
 		
 		JPanel imagePanel = new JPanel();
-		imagePanel.setBackground(Color.BLUE);
+		imagePanel.setLayout(new GridBagLayout());
+		if(listing.getImage() != null) {
+        	Image image = ImageUtil.decodeToImage(listing.getImage()).getScaledInstance(400, 400, Image.SCALE_DEFAULT);
+        	imagePanel.add(new JLabel(new ImageIcon(image)), new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0,0,0,0), 0, 0));
+        	imagePanel.setPreferredSize(new Dimension(400, 400));
+		}
 		this.add(imagePanel, c);
 		
 		this.createDetailsPane();

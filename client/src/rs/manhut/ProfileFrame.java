@@ -38,8 +38,10 @@ public class ProfileFrame extends JFrame implements ListingClickListener  {
     public ProfileFrame(Party party, InitialContext ctx){
         this.party = party;
         this.ctx = ctx;
+        
+        this.setTitle("Your profile and listings");
 
-        this.setSize(1920,1080);
+        this.setSize(1600,900);
 
         this.setLayout(new BorderLayout());
 
@@ -65,19 +67,24 @@ public class ProfileFrame extends JFrame implements ListingClickListener  {
     private JPanel northPanel(){
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        JLabel avatarLabel = new JLabel(new ImageIcon(avatar));
-        panel.add(avatarLabel, BorderLayout.WEST);
-        panel.add(new JLabel(party.getFirstName() + " " + party.getLastName()));
-        JButton backButton = new JButton("Back");
+        if(party.getProfilePicture() != null) {
+	        Image image = ImageUtil.decodeToImage(party.getProfilePicture()).getScaledInstance(80, 80, Image.SCALE_DEFAULT);
+	        JLabel avatarLabel = new JLabel(new ImageIcon(image));
+	        avatarLabel.setPreferredSize(new Dimension(80, 80));
+	        panel.add(avatarLabel, BorderLayout.WEST);
+        }
+        
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.add(new JLabel("  " + party.getFirstName() + " " + party.getLastName()));
+        JButton backButton = new JButton("Back to search");
         backButton.addActionListener(new ActionListener() {
-            @Override
+        	@Override
             public void actionPerformed(ActionEvent e) {
                 MainFrame mainFrame = new MainFrame(party,ctx);
                 dispose();
             }
         });
         panel.add(backButton, BorderLayout.EAST);
-        panel.setBorder(new TitledBorder(new LineBorder(Color.BLACK, 3), party.getEmail()));
         return panel;
     }
 
