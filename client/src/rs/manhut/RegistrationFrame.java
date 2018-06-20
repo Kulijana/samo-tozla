@@ -216,7 +216,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     			password = String.copyValueOf(passwordField.getPassword()),
     			desc = descriptionTextArea.getText();
     	try {
-    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
+    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, ImageUtil.encodeToString(avatar, "jpg"));
     		if(p != null)
     			this.showSuccessDialog();
     		else
