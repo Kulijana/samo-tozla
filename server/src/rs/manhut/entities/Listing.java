@@ -17,6 +17,7 @@ import javax.persistence.*;
 	@NamedQuery(name = "Listing.getAll", query = "SELECT l FROM Listing l WHERE (:material IS NULL OR l.material LIKE :material) AND "
 												+ "(:color IS NULL OR l.color LIKE :color) AND "
 												+ "(:active IS NULL OR l.active = :active) AND "
+												+ "(:type IS NULL OR l.type = :type) AND "
 												+ "(:name IS NULL OR (l.name LIKE :name))")
 })
 public class Listing implements Serializable {

@@ -31,6 +31,7 @@ public interface ListingDAOI {
 	public List<Listing> getAllListings(String name,
 										String material,
 										String color,
+										String type,
 										Boolean active);
 	
 	public List<Listing> getPartyListings(@NotNull Party party);

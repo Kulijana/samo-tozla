@@ -7,10 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import Decoder.BASE64Decoder;
-import Decoder.BASE64Encoder;
-//import sun.misc.BASE64Decoder;
-//import sun.misc.BASE64Encoder;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class ImageUtil {
 	public static BufferedImage decodeToImage(String imageString) {

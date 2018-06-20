@@ -1,16 +1,10 @@
 package rs.manhut.beans;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
@@ -20,8 +14,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import rs.manhut.entities.Bid;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
-//import sun.misc.BASE64Decoder;
-//import sun.misc.BASE64Encoder;
 
 @Stateless
 @Remote(ListingDAOI.class)
@@ -92,6 +84,7 @@ public class ListingDAO implements ListingDAOI {
 	public List<Listing> getAllListings(String name,
 										String material,
 										String color,
+										String type,
 										Boolean active) {
 		String nameExp;
 		if(name == null)
@@ -103,6 +96,7 @@ public class ListingDAO implements ListingDAOI {
 									.setParameter("material", material)
 									.setParameter("active", active)
 									.setParameter("color", color)
+									.setParameter("type", type)
 									.setParameter("name", nameExp)
 									.getResultList();
 	}

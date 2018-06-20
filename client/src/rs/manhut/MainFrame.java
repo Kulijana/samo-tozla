@@ -50,9 +50,15 @@ public class MainFrame extends JFrame implements ListingClickListener {
         this.add(northPanel(), BorderLayout.NORTH);
         pane = new JScrollPane();
         pane.getVerticalScrollBar().setUnitIncrement(16);
-        centralPanel = generateCentralPanel();
-        pane.setViewportView(centralPanel);
-        this.add(pane, BorderLayout.CENTER);
+        
+    	try {
+			listings = getListingDAO().getAllListings(null, null, null, null, true);
+	        centralPanel = generateCentralPanel();
+	        pane.setViewportView(centralPanel);
+	        this.add(pane, BorderLayout.CENTER);
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
         this.setVisible(true);
     }
 
@@ -97,15 +103,9 @@ public class MainFrame extends JFrame implements ListingClickListener {
             ex.printStackTrace();
         }
         
-        try {
-        	List<Listing> listings = getListingDAO().getAllListings(null, null, null, null);
-        	for(Listing l : listings) {
-        		System.out.println(l);
-    			panel.add(new MinimizedListingPanel(l, party, ctx, this));
-        	}
-        } catch (NamingException ne) {
-        	ne.printStackTrace();
-        }
+    	for(Listing l : listings) {	
+			panel.add(new MinimizedListingPanel(l, party, ctx, this));
+    	}
         
         panel.setVisible(true);
         return panel;
@@ -126,6 +126,7 @@ public class MainFrame extends JFrame implements ListingClickListener {
         panel.add(new JLabel("Material"), c);
 
         materialBox = new JComboBox<>();
+        materialBox.addItem("");
         for(Listing.MaterialType material : Listing.MaterialType.values())
             materialBox.addItem(material.name());
         c = generateConstraints(1,1);
@@ -135,6 +136,7 @@ public class MainFrame extends JFrame implements ListingClickListener {
         panel.add(new JLabel("Color"),c);
 
         colorBox = new JComboBox();
+        colorBox.addItem("");
         for(Listing.JewelryColor color : Listing.JewelryColor.values()) {
             colorBox.addItem(color.name());
         }
@@ -145,6 +147,7 @@ public class MainFrame extends JFrame implements ListingClickListener {
         panel.add(new JLabel("Type"),c);
 
         typeBox = new JComboBox();
+        typeBox.addItem("");
         for(Listing.JewelryType type : Listing.JewelryType.values())
             typeBox.addItem(type.name());
         c = generateConstraints(1, 3);
@@ -156,15 +159,32 @@ public class MainFrame extends JFrame implements ListingClickListener {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ListingDAOI listingDAOI = new ListingDAO();
-                listings = listingDAOI.getAllListings(nameField.getText()
-                        , materialBox.getSelectedItem().toString()
-                        , colorBox.getSelectedItem().toString()
-                , true);
-                centralPanel = generateCentralPanel();
-                pane.setViewportView(centralPanel);
-                pane.validate();
-                pane.repaint();
+            	try {
+            		String material = materialBox.getSelectedItem().toString();
+            		if(material.isEmpty())
+            			material = null;
+            		
+            		String color = colorBox.getSelectedItem().toString();
+            		if(color.isEmpty())
+            			color = null;
+            		
+            		String type = typeBox.getSelectedItem().toString();
+            		if(type.isEmpty())
+            			type = null;
+            		
+            		
+	                listings = getListingDAO().getAllListings(nameField.getText()
+	                        , material
+	                        , color
+	                        , type
+	                        , true);
+	                centralPanel = generateCentralPanel();
+	                pane.setViewportView(centralPanel);
+	                pane.validate();
+	                pane.repaint();
+            	} catch (NamingException ne) {
+            		ne.printStackTrace();
+            	}
             }
         });
         panel.add(searchButton,c);
