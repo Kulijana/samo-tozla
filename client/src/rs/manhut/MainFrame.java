@@ -1,20 +1,29 @@
 package rs.manhut;
 
+import rs.manhut.beans.ListingDAOI;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
 import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
 
     private Party party;
     private InitialContext ctx;
@@ -26,14 +35,17 @@ public class MainFrame extends JFrame{
     private List<Listing> listings;
 
     private JPanel centralPanel;
+    
+    private ListingDAOI listingDAO;
 
     public MainFrame(Party party, InitialContext ctx){
         this.party = party;
         this.ctx = ctx;
-        this.setSize(1920,1080);
+        this.setSize(1600, 900);
         this.add(westPanel(), BorderLayout.WEST);
         this.add(northPanel(), BorderLayout.NORTH);
         JScrollPane pane = new JScrollPane();
+        pane.getVerticalScrollBar().setUnitIncrement(16);
         centralPanel = generateCentralPanel();
         pane.setViewportView(centralPanel);
         this.add(pane, BorderLayout.CENTER);
@@ -58,9 +70,8 @@ public class MainFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO return to the main page
-                ProfileFrame profileFrame = new ProfileFrame(party,ctx);
+                ProfileFrame profileFrame = new ProfileFrame(party, ctx);
                 dispose();
-
             }
         });
         panel.add(backButton, BorderLayout.EAST);
@@ -69,28 +80,35 @@ public class MainFrame extends JFrame{
     }
 
     private JPanel generateCentralPanel(){
-        //TODO add ListingPanels for each listing
         JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
+        ModifiedFlowLayout flowLayout= new ModifiedFlowLayout();
+        flowLayout.setHgap(10);
+        flowLayout.setVgap(10);
+        panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        panel.setLayout(flowLayout);
+        
         Image image = null;
         try {
             image = ImageIO.read(new File("./Testing.jpg"));
-
-        }catch(Exception ex){
+        } catch(Exception ex) {
             ex.printStackTrace();
         }
         //panel.add(new JLabel(new ImageIcon(image)));
 //        for(Listing listing : listings){
 //            panel.add(new MinimizedListingPanel(image, 404.00));
 //        }
-        for(int i = 0;i < 14;i++){
-            GridBagConstraints c =new GridBagConstraints();
-            c.gridx = i%6;
-            c.gridy = i/6;
-            c.anchor = GridBagConstraints.NORTH;
-            c.insets = new Insets(10,10,10,10);
-            panel.add(new MinimizedListingPanel(image, 403.00),c);
+        try {
+        	List<Listing> listings = getListingDAO().getAllListings(null, null, null, null);
+        	for(Listing l : listings) {
+        		if(l.getImage() != null)
+        			panel.add(new MinimizedListingPanel(ImageUtil.decodeToImage(l.getImage()), l.getStartPrice()));
+        		else
+        			panel.add(new MinimizedListingPanel(image, l.getStartPrice()));
+        	}
+        } catch (NamingException ne) {
+        	ne.printStackTrace();
         }
+        
         panel.setVisible(true);
         return panel;
     }
@@ -156,7 +174,14 @@ public class MainFrame extends JFrame{
 
         return panel;
     }
-
+    
+    private ListingDAOI getListingDAO() throws NamingException {
+    	if(listingDAO == null) {
+			String name = "ejb:/samo-tozla//ListingDAO!" + ListingDAOI.class.getName();
+			listingDAO = (ListingDAOI) ctx.lookup(name);
+    	}
+    	return listingDAO;
+    }
 
     private GridBagConstraints generateConstraints(int x, int y){
         GridBagConstraints c = new GridBagConstraints();

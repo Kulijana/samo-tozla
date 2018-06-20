@@ -56,6 +56,9 @@ public class Listing implements Serializable {
 	
 	@Column(name="DESC")
 	private String description;
+	
+	@Lob
+	private String image;
 
 	public Listing() {
 		super();
@@ -143,6 +146,14 @@ public class Listing implements Serializable {
 	
 	public void setType(String type) {
 		this.type = JewelryType.valueOf(type);
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 

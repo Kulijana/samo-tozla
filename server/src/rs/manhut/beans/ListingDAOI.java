@@ -1,5 +1,7 @@
 package rs.manhut.beans;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -19,7 +21,8 @@ public interface ListingDAOI {
 								@NotBlank String type,
 								@NotBlank String color,
 								@NotNull Double startingPrice,
-								@NotBlank String description);
+								@NotBlank String description,
+								String image);
 	
 	public Listing getListingById(@NotNull Long id);
 	

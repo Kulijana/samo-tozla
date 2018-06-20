@@ -31,7 +31,6 @@ public class LoginFrame extends JFrame {
     
     private PartyDAOI partyDAO;
     private InitialContext ctx;
-    private ListingDAOI listingDAO;
     
     public LoginFrame(InitialContext ctx) {
     	this.ctx = ctx;
@@ -129,14 +128,6 @@ public class LoginFrame extends JFrame {
     	});
     }
     
-    private ListingDAOI getListingDAO() throws NamingException {
-    	if(listingDAO == null) {
-			String name = "ejb:/samo-tozla//ListingDAO!" + ListingDAOI.class.getName();
-			listingDAO = (ListingDAOI) ctx.lookup(name);
-    	}
-    	return listingDAO;
-    }
-    
     private void login() {
     	String email = emailTextField.getText().trim();
 		String password = String.copyValueOf(passwordField.getPassword());
@@ -154,15 +145,9 @@ public class LoginFrame extends JFrame {
 		try {
 			Party party = this.getPartyDAO().login(email, password);
 			if(party != null) {
-				// TODO open main frame
-				List<Listing> l = this.getListingDAO().getAllListings(null, null, null, null);
-				
-				if(!l.isEmpty()) {
-					JFrame frame = new JFrame();
-					frame.setSize(1600, 900);
-					frame.add(new ListingPanel(party, l.get(2), ctx));
-					frame.setVisible(true);
-				}
+				MainFrame mainFrame = new MainFrame(party, ctx);
+				this.setVisible(false);
+				this.dispose();
 			} else {
 				JOptionPane.showMessageDialog(LoginFrame.this, "The email or password you entered is incorrect.", "Error", JOptionPane.WARNING_MESSAGE);
 			}

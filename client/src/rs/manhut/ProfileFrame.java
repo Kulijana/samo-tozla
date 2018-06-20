@@ -1,6 +1,5 @@
 package rs.manhut;
 
-import com.sun.tools.javac.Main;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
@@ -135,7 +134,7 @@ public class ProfileFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO actually do something useful with this
-                CreateListingFrame newListing = new CreateListingFrame(null,null);
+                CreateListingFrame newListing = new CreateListingFrame(party, ctx);
             }
         });
         panel.add(button);
