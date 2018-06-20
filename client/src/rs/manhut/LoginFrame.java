@@ -16,6 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import rs.manhut.beans.PartyDAOI;
+import rs.manhut.entities.Listing.JewelryColor;
 import rs.manhut.entities.Party;
 
 public class LoginFrame extends JFrame {
@@ -32,12 +33,14 @@ public class LoginFrame extends JFrame {
     	this.ctx = ctx;
     	
     	this.setLayout(new GridBagLayout());
+    	this.setTitle("Login");
+    	
     	GridBagConstraints c = new GridBagConstraints();
     	c.anchor = GridBagConstraints.LINE_END;
     	c.insets = new Insets(10, 0, 0, 10);
     	c.gridx = 0;
     	c.gridy = 0;
-    	c.weightx = 0.4;
+    	c.weightx = 1;
     	c.weighty = 1;
     	this.add(new JLabel("Email:"), c);
     	
@@ -47,11 +50,11 @@ public class LoginFrame extends JFrame {
     	
     	c = new GridBagConstraints();
     	c.anchor = GridBagConstraints.LINE_START;
-    	c.insets = new Insets(10, 5, 0, 10);
+    	c.insets = new Insets(10, 0, 0, 10);
     	c.fill = GridBagConstraints.HORIZONTAL;
     	c.gridx = 1;
     	c.gridy = 0;
-    	c.weightx = 0.4;
+    	c.weightx = 1;
     	c.gridwidth = 2;
     	
     	emailTextField = new JTextField();
@@ -73,10 +76,10 @@ public class LoginFrame extends JFrame {
     private void createButtonComponents() {
     	GridBagConstraints c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(10, 10, 10, 10);
         c.gridx = 1;
         c.gridy = 2;
         c.weighty = 1;
+        c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         
         loginButton = new JButton("Login");
@@ -94,10 +97,11 @@ public class LoginFrame extends JFrame {
         
         c = new GridBagConstraints();
         c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 0, 5, 5);
         c.gridx = 2;
         c.gridy = 3;
-        c.weightx = 0.4;
+        c.weightx = 1;
         
         registerButton = new JButton("Register");
         this.add(registerButton, c);
@@ -135,13 +139,10 @@ public class LoginFrame extends JFrame {
 			return;
 		}
 		
-		System.out.println(email + " " + password);
-		
 		try {
 			Party party = this.getPartyDAO().login(email, password);
 			if(party != null) {
-				// TODO go to main frame and pass through party
-				System.out.println("Successful login");
+				// TODO open main frame
 			} else {
 				JOptionPane.showMessageDialog(LoginFrame.this, "The email or password you entered is incorrect.", "Error", JOptionPane.WARNING_MESSAGE);
 			}

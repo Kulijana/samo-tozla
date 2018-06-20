@@ -53,7 +53,7 @@ public class CommentDAO implements CommentDAOI {
 	}
 
 	@Override
-	public List<Comment> getListingComments(@NotNull Listing listing) throws IllegalArgumentException {
+	public List<Comment> getListingComments(@NotNull Listing listing) {
 		if(listing.getId() != null) {
 			return em.createNamedQuery("Comment.getByListing", Comment.class)
 						.setParameter("listingId", listing.getId())
@@ -64,7 +64,7 @@ public class CommentDAO implements CommentDAOI {
 	}
 
 	@Override
-	public List<Comment> getPartyComments(@NotNull Party author) throws IllegalArgumentException {
+	public List<Comment> getPartyComments(@NotNull Party author) {
 		if(author.getId() != null) {
 			return em.createNamedQuery("Comment.getByAuthor", Comment.class)
 					.setParameter("authorId", author.getId())
@@ -75,7 +75,7 @@ public class CommentDAO implements CommentDAOI {
 	}
 
 	@Override
-	public List<Comment> getRootComments(Listing listing) throws IllegalArgumentException {
+	public List<Comment> getRootComments(Listing listing) {
 		if(listing.getId() != null) {
 			return em.createNamedQuery("Comment.getRootComments", Comment.class)
 					.setParameter("listingId", listing.getId())
@@ -86,7 +86,7 @@ public class CommentDAO implements CommentDAOI {
 	}
 
 	@Override
-	public List<Comment> getChildComments(Comment parentComment)  throws IllegalArgumentException {
+	public List<Comment> getChildComments(Comment parentComment) {
 		if(parentComment.getId() != null) {
 			return em.createNamedQuery("Comment.getChildComments", Comment.class)
 					.setParameter("parentCommentId", parentComment.getId())

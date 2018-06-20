@@ -61,7 +61,7 @@ public class PartyDAO implements PartyDAOI {
 					@NotBlank String firstName, 
 					@NotBlank String lastName, 
 					@NotBlank String description, 
-					@NotBlank String profilePicture) throws IllegalArgumentException {
+					@NotBlank String profilePicture) {
 		Party p = getParty(email);
 		if(p != null)
 			throw new IllegalArgumentException("User with email \"" + email + "\" already exists.");

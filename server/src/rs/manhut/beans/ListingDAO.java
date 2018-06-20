@@ -28,7 +28,7 @@ public class ListingDAO implements ListingDAOI {
 								@NotBlank String type,
 								@NotBlank String color,
 								@NotNull Double startingPrice,
-								@NotBlank String description) throws IllegalArgumentException {
+								@NotBlank String description) {
 		Listing l = getListingByName(name, owner);
 		
 		if(l != null)

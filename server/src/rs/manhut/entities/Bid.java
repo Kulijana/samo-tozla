@@ -10,7 +10,11 @@ import javax.persistence.*;
  *
  */
 @Entity
-
+@NamedQueries({
+	@NamedQuery(name = "Bid.getBidsByListing", query = "SELECT b FROM Bid b WHERE b.listing.id = :listingId ORDER BY b.amount DESC"),
+	@NamedQuery(name = "Bid.getWinningBid", query = "SELECT b FROM Bid b WHERE b.listing.id = :listingId AND b.winning = true"),
+	@NamedQuery(name = "Bid.getPartyBids", query = "SELECT b FROM Bid b WHERE b.bidder.id = :partyId")
+})
 public class Bid implements Serializable {
 
 	
@@ -30,7 +34,7 @@ public class Bid implements Serializable {
 	private Party bidder;
 	
 	@Column(name="AMOUNT")
-	private BigDecimal amount;
+	private Double amount;
 	
 	@Column(name="WINNING")
 	private boolean winning;
@@ -63,11 +67,11 @@ public class Bid implements Serializable {
 		this.bidder = bidder;
 	}
 
-	public BigDecimal getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

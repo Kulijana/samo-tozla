@@ -5,6 +5,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rs.manhut.beans.ListingDAOI;
@@ -159,22 +160,64 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     	String email = emailTextField.getText(),
     			firstName = firstNameTextField.getText(),
     			lastName = lastNameTextField.getText(),
-    			password = passwordField.getPassword().toString(),
+    			password = String.copyValueOf(passwordField.getPassword()),
     			desc = descriptionTextField.getText();
     	try {
-    		// Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
-    		
-    		List<Listing> list = this.getListingDAO().getAllListings(null, null, null, null);
-    		
-    		if(!list.isEmpty()) {
-    			this.remove(mainPanel);
-    			this.setSize(1600, 900);
-    			this.add(new ListingPanel(list.get(0).getOwner(), list.get(0), ctx));
-    		}
-    		
-    		// this.setVisible(false);
+    		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
+			this.showSuccessDialog();
     	} catch (NamingException ne) {
     		ne.printStackTrace();
+    	} catch (IllegalArgumentException iae) {
+    		JOptionPane.showMessageDialog(this, iae.getMessage(), "Could not register", JOptionPane.ERROR_MESSAGE);
     	}
     }
+    
+    public void showSuccessDialog() {
+    	SuccessDialog sd = new SuccessDialog(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LoginFrame lf = new LoginFrame(RegistrationFrame.this.ctx);
+		    	RegistrationFrame.this.setVisible(false);
+		    	RegistrationFrame.this.dispose();
+			}
+		});
+    	
+    	sd.setLocationRelativeTo(this);
+    	sd.setVisible(true);
+    }
+    
+    private class SuccessDialog extends JDialog implements ActionListener {
+    	
+    	private ActionListener listener;
+    	private JButton button;
+    	
+    	public SuccessDialog(ActionListener al) {
+    		this.listener = al;
+            setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+            setLayout(new BorderLayout());
+
+            JTextArea label = new JTextArea("You have successfully registered.\nYou can now log into the application.");
+            label.setEditable(false);
+            label.setBackground(new Color(0, 0, 0, 0));
+            label.setBorder(new EmptyBorder(20, 20, 20, 20));
+            add(label, BorderLayout.CENTER);
+            
+            button = new JButton("Go to login");
+            button.addActionListener(this);
+            add(button, BorderLayout.SOUTH);
+            pack();
+            setVisible(true);
+    	}
+    	
+    	@Override
+    	public void actionPerformed(ActionEvent e) {
+    		if(this.listener != null)
+    			listener.actionPerformed(e);
+    		
+    		this.dispose();
+    	}
+    }
+
+	
 }
