@@ -65,32 +65,11 @@ public class ProfileFrame extends JFrame {
         return panel;
     }
 
-    private JPanel westPanel(){
-        //TODO add something to indicate what field fits what category
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        category1 = new JTextField();
-        category2 = new JTextField();
-
-        panel.add(category1);
-        panel.add(category2);
-
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO this is the button that triggers the search by categories
-            }
-        });
-        panel.add(searchButton);
-        return panel;
-    }
 
     private JPanel centralPanel(){
         //TODO add ListingPanels for each listing
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        //panel.add(new JLabel("TEST"));
         Image image = null;
         try {
             image = ImageIO.read(new File("./Testing.jpg"));
