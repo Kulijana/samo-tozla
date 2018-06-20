@@ -1,5 +1,6 @@
 package rs.manhut;
 
+import rs.manhut.beans.ListingDAO;
 import rs.manhut.beans.ListingDAOI;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
@@ -42,6 +43,7 @@ public class MainFrame extends JFrame {
         this.party = party;
         this.ctx = ctx;
         this.setSize(1600, 900);
+
         this.add(westPanel(), BorderLayout.WEST);
         this.add(northPanel(), BorderLayout.NORTH);
         JScrollPane pane = new JScrollPane();
@@ -69,7 +71,6 @@ public class MainFrame extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO return to the main page
                 ProfileFrame profileFrame = new ProfileFrame(party, ctx);
                 dispose();
             }
@@ -158,10 +159,12 @@ public class MainFrame extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO Fire off a querry
-                //this should get the value from the querry
-                List<Listing> listings1= null;
-                listings = listings1;
+                //TODO attempt of integration, we need to add Jewlery_Type as a parameter  in ListingDAOI
+                ListingDAOI listingDAOI = new ListingDAO();
+                listings = listingDAOI.getAllListings(nameField.getText()
+                        , materialBox.getSelectedItem().toString()
+                        , colorBox.getSelectedItem().toString()
+                , true);
                 centralPanel = generateCentralPanel();
                 //We might need to setVisible again on whole frame, or some similar method, to make the changes visible
 

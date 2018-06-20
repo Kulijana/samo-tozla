@@ -10,16 +10,7 @@ import java.text.NumberFormat;
 import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rs.manhut.beans.ListingDAOI;

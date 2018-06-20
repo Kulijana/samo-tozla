@@ -1,5 +1,8 @@
 package rs.manhut;
 
+import rs.manhut.beans.ListingDAO;
+import rs.manhut.beans.ListingDAOI;
+import rs.manhut.beans.PartyDAO;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
@@ -44,7 +47,8 @@ public class ProfileFrame extends JFrame {
         }
 
         //TODO replace this with an actual list of listings from the party
-        listings = new ArrayList<>();
+        ListingDAOI listingDAOI = new ListingDAO();
+        listings = listingDAOI.getPartyListings(party);
 
         this.add(northPanel(), BorderLayout.NORTH);
 
@@ -101,7 +105,7 @@ public class ProfileFrame extends JFrame {
 
 
     private JPanel centralPanel(){
-        //TODO add ListingPanels for each listing
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         Image image = null;
@@ -113,7 +117,7 @@ public class ProfileFrame extends JFrame {
         }
         //panel.add(new JLabel(new ImageIcon(image)));
         for(Listing listing : listings){
-            panel.add(new MinimizedListingPanel(image, 404.00));
+            panel.add(new MinimizedListingPanel(listing));
         }
         for(int i = 0;i < 14;i++){
             GridBagConstraints c =new GridBagConstraints();
@@ -133,7 +137,6 @@ public class ProfileFrame extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO actually do something useful with this
                 CreateListingFrame newListing = new CreateListingFrame(party, ctx);
             }
         });
