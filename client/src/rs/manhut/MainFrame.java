@@ -25,6 +25,8 @@ public class MainFrame extends JFrame{
     private JComboBox typeBox;
     private List<Listing> listings;
 
+    private JPanel centralPanel;
+
     public MainFrame(Party party, InitialContext ctx){
         this.party = party;
         this.ctx = ctx;
@@ -32,7 +34,8 @@ public class MainFrame extends JFrame{
         this.add(westPanel(), BorderLayout.WEST);
         this.add(northPanel(), BorderLayout.NORTH);
         JScrollPane pane = new JScrollPane();
-        pane.setViewportView(centralPanel());
+        centralPanel = generateCentralPanel();
+        pane.setViewportView(centralPanel);
         this.add(pane, BorderLayout.CENTER);
         this.setVisible(true);
     }
@@ -55,6 +58,9 @@ public class MainFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO return to the main page
+                ProfileFrame profileFrame = new ProfileFrame(party,ctx);
+                dispose();
+
             }
         });
         panel.add(backButton, BorderLayout.EAST);
@@ -62,7 +68,7 @@ public class MainFrame extends JFrame{
         return panel;
     }
 
-    private JPanel centralPanel(){
+    private JPanel generateCentralPanel(){
         //TODO add ListingPanels for each listing
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -138,9 +144,8 @@ public class MainFrame extends JFrame{
                 //this should get the value from the querry
                 List<Listing> listings1= null;
                 listings = listings1;
-                //redraw();
-                //the redraw method is still not done, it should just update the central part of the panel so it fits
-                //the new listings
+                centralPanel = generateCentralPanel();
+                //We might need to setVisible again on whole frame, or some similar method, to make the changes visible
 
 
             }
@@ -151,6 +156,7 @@ public class MainFrame extends JFrame{
 
         return panel;
     }
+
 
     private GridBagConstraints generateConstraints(int x, int y){
         GridBagConstraints c = new GridBagConstraints();

@@ -20,6 +20,6 @@ public class ProfileFrameTest {
         }catch (Exception e){
             e.printStackTrace();
         }
-        ProfileFrame frame = new ProfileFrame("admin", "Admin Adminovic", image, new ArrayList<Listing>());
+        ProfileFrame frame = new ProfileFrame(null, null);
     }
 }

@@ -15,6 +15,7 @@ public class MinimizedListingPanel extends JPanel {
     private Image itemImage;
     private Double currentBid;
 
+    //this one is mostly for testing, the one under that takes in just a Listing as a parameter will be the one used
     public MinimizedListingPanel(Image itemImage, Double currentBid){
         this.setLayout(new BorderLayout());
         this.itemImage = itemImage;
