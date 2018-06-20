@@ -132,7 +132,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
         cs.gridx = 1;
         cs.gridy = 11;
         cs.gridwidth = 1;
-//        cs.weightx = 0.8;
+
         gridPanel.add(new JLabel("Password: "), cs);
 
         passwordField = new JPasswordField(20);
@@ -141,7 +141,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
         cs.gridx = 2;
         cs.gridy = 11;
         cs.gridwidth = 2;
-//        cs.weightx = 0.3;
+
         gridPanel.add(passwordField, cs);
 
         cs.insets = new Insets(10,0,10,0);
@@ -173,7 +173,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
         gridPanel.add(avatarButton, cs);
 
 
-        
+
 
         avatarButton.addActionListener(new ActionListener() {
             @Override
