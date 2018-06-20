@@ -47,11 +47,11 @@ public class PartyDAO implements PartyDAOI {
 	public Party login(@NotBlank String email, @NotBlank String password) {
 		List<Party> results = em.createNamedQuery("Party.login", Party.class)
 													.setParameter("email", email)
-													.setParameter("password", password)
+													.setParameter("password", sha1(password.getBytes()))
 													.getResultList();
 		
 		if(!results.isEmpty())
-			results.get(0);
+			return results.get(0);
 		
 		return null;
 	}

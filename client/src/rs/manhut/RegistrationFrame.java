@@ -40,14 +40,8 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     
     private InitialContext ctx;
 
-    public RegistrationFrame(){
-    	try {
-			Properties properties = new Properties();
-			properties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-			ctx = new InitialContext(properties);
-    	} catch (NamingException ne) {
-    		ne.printStackTrace();
-    	}
+    public RegistrationFrame(InitialContext ctx) {
+    	this.ctx = ctx;
     	
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600,300);
@@ -76,8 +70,30 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     }
 
     private void initGridPanel(){
-        gridPanel = new JPanel(new GridLayout(6,2));
-        gridPanel.add(new JLabel("Email:"));
+        gridPanel = new JPanel(new GridBagLayout());
+        
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.LINE_END;
+        c.insets = new Insets(10, 0, 0, 10);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 0.3;
+        c.weighty = 1;
+        gridPanel.add(new JLabel("Email:"), c);
+        
+        c.gridy = 1;
+        gridPanel.add(new JLabel("Password:"), c);
+        
+        c.gridy = 3;
+        gridPanel.add(new JLabel("First Name:"), c);
+        
+        c.gridy = 4;
+        gridPanel.add(new JLabel("Last Name:"), c);
+        
+        c.gridy = 5;
+        gridPanel.add(new JLabel("Description:"), c);
+        
+        
         emailTextField = new JTextField();
         emailTextField.setPreferredSize(new Dimension(150, 40));
         gridPanel.add(emailTextField);
