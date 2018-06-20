@@ -47,11 +47,11 @@ public class PartyDAO implements PartyDAOI {
 	public Party login(@NotBlank String email, @NotBlank String password) {
 		List<Party> results = em.createNamedQuery("Party.login", Party.class)
 													.setParameter("email", email)
-													.setParameter("password", password)
+													.setParameter("password", sha1(password.getBytes()))
 													.getResultList();
 		
 		if(!results.isEmpty())
-			results.get(0);
+			return results.get(0);
 		
 		return null;
 	}
@@ -61,7 +61,7 @@ public class PartyDAO implements PartyDAOI {
 					@NotBlank String firstName, 
 					@NotBlank String lastName, 
 					@NotBlank String description, 
-					@NotBlank String profilePicture) throws IllegalArgumentException {
+					@NotBlank String profilePicture) {
 		Party p = getParty(email);
 		if(p != null)
 			throw new IllegalArgumentException("User with email \"" + email + "\" already exists.");

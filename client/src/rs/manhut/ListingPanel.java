@@ -7,8 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -23,7 +21,6 @@ import javax.swing.JTextArea;
 import rs.manhut.beans.CommentDAOI;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
-//import sun.awt.WindowClosingListener;
 
 public class ListingPanel extends JPanel {
 	
