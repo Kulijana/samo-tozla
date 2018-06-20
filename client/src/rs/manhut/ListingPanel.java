@@ -32,8 +32,8 @@ public class ListingPanel extends JPanel {
 	
 	private JScrollPane scrollPane;
 	
-	public ListingPanel(Party party, Listing l, InitialContext ctx) {
-		listing = l;
+	public ListingPanel(Party party, Listing listing, InitialContext ctx) {
+		this.listing = listing;
 		this.ctx = ctx;
 		this.party = party;
 		
@@ -55,17 +55,9 @@ public class ListingPanel extends JPanel {
 		
 		this.createDetailsPane();
 		this.createCommentScrollPane();
+		this.createBidPane();
 		
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 7;
-		c.gridwidth = 2;
-		c.weighty = 1;
-		c.anchor = GridBagConstraints.FIRST_LINE_START;
-		c.fill = GridBagConstraints.BOTH;
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.BLACK);
-		this.add(panel, c);
+		
 	}
 	
 	private CommentDAOI getCommentDAO() throws NamingException {
@@ -75,6 +67,18 @@ public class ListingPanel extends JPanel {
     	}
     	return commentDAO;
     }
+	
+	private void createBidPane() {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 7;
+		c.gridwidth = 2;
+		c.weighty = 1;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.fill = GridBagConstraints.BOTH;
+		BidPanel panel = new BidPanel(this.listing, this.ctx);
+		this.add(panel, c);
+	}
 	
 	private void createDetailsPane() {
 		GridBagConstraints c = new GridBagConstraints();

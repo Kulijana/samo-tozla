@@ -37,7 +37,6 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     private JButton registerButton;
     
     private PartyDAOI partyDAO;
-    private ListingDAOI listingDAO;
     
     private InitialContext ctx;
 
@@ -146,14 +145,6 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 		}
 		return partyDAO;
 	}
-    
-    private ListingDAOI getListingDAO() throws NamingException {
-    	if(listingDAO == null) {
-			String name = "ejb:/samo-tozla//ListingDAO!" + ListingDAOI.class.getName();
-			listingDAO = (ListingDAOI) ctx.lookup(name);
-    	}
-    	return listingDAO;
-    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
