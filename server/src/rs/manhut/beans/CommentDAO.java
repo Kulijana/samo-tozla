@@ -59,7 +59,7 @@ public class CommentDAO implements CommentDAOI {
 						.setParameter("listingId", listing.getId())
 						.getResultList();
 		} else {
-			throw new IllegalArgumentException("Listing id is null.");
+			return null;
 		}
 	}
 
@@ -81,7 +81,7 @@ public class CommentDAO implements CommentDAOI {
 					.setParameter("listingId", listing.getId())
 					.getResultList();
 		} else {
-			throw new IllegalArgumentException("Listing id is null.");
+			return null;
 		}
 	}
 
@@ -92,7 +92,7 @@ public class CommentDAO implements CommentDAOI {
 					.setParameter("parentCommentId", parentComment.getId())
 					.getResultList();
 		} else {
-			throw new IllegalArgumentException("Parent comment id is null.");
+			return null;
 		}
 	}
 

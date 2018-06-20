@@ -2,6 +2,7 @@ package rs.manhut.beans;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import rs.manhut.entities.Bid;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
@@ -20,6 +22,8 @@ public class ListingDAO implements ListingDAOI {
 	
 	@PersistenceContext(name = "OOP2_SAMO_TOZLA")
 	private EntityManager em;
+	
+	@EJB BidDAOI bidDAO;
 	
 	@Override
 	public Listing createListing(@NotNull Party owner,
@@ -32,7 +36,7 @@ public class ListingDAO implements ListingDAOI {
 		Listing l = getListingByName(name, owner);
 		
 		if(l != null)
-			throw new IllegalArgumentException("You already have a listing with the name: " + name);
+			return null;
 		
 		l = new Listing();
 		l.setActive(true);
@@ -98,6 +102,22 @@ public class ListingDAO implements ListingDAOI {
 		return em.createNamedQuery("Listing.getByParty", Listing.class)
 				.setParameter("ownerId", party.getId())
 				.getResultList();
+	}
+
+
+	@Override
+	public Bid stopAuction(Listing listing, Party party) {
+		Listing l = getListingById(listing.getId());
+		
+		if(l.getOwner().getId().equals(party.getId())) {
+			l.setActive(false);
+			em.merge(l);
+			
+			Bid bid = bidDAO.setWinningBid(l);
+			return bid;
+		}
+		
+		return null;
 	}
 
 

@@ -1,5 +1,6 @@
 package rs.manhut.beans;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -66,23 +67,37 @@ public class BidDAO implements BidDAOI {
 		Listing l = listingDAO.getListingById(listing.getId());
 		
 		if(!l.getActive())
-			throw new IllegalArgumentException("Cannot bid on an inactive listing!");
+			return null;
 	
 		if(l.getOwner().getId().equals(party.getId()))
-			throw new IllegalArgumentException("Cannot bid on your own listing!");
+			return null;
 		
 		List<Bid> bidList = this.getListingBids(listing);
-		if(bidList.get(0).getAmount() + 100 >= amount)
-			throw new IllegalArgumentException("Your bid is too low!");
+		if(!bidList.isEmpty() && bidList.get(0).getAmount() >= amount)
+			return null;
 		
 		Bid bid = new Bid();
 		bid.setAmount(amount);
 		bid.setListing(l);
 		bid.setBidder(party);
 		bid.setWinning(false);
+		bid.setCreatedOn(new Date());
 		
 		em.persist(bid);
 		return bid;
 	}
 
+	@Override
+	public Bid setWinningBid(Listing listing) {
+		List<Bid> bids = this.getListingBids(listing);
+		
+		if(!bids.isEmpty()) {
+			Bid bid = bids.get(0);
+			bid.setWinning(true);
+			em.merge(bid);
+			
+			return bid;
+		}
+		return null;
+	}
 }

@@ -64,7 +64,7 @@ public class PartyDAO implements PartyDAOI {
 					@NotBlank String profilePicture) {
 		Party p = getParty(email);
 		if(p != null)
-			throw new IllegalArgumentException("User with email \"" + email + "\" already exists.");
+			return null;
 		
 		p = new Party();	
 		p.setEmail(email);

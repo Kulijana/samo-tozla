@@ -76,7 +76,7 @@ public class ListingPanel extends JPanel {
 		c.weighty = 1;
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		c.fill = GridBagConstraints.BOTH;
-		BidPanel panel = new BidPanel(this.listing, this.ctx);
+		BidPanel panel = new BidPanel(this.listing, this.party, this.ctx);
 		this.add(panel, c);
 	}
 	

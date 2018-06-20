@@ -17,4 +17,6 @@ public interface BidDAOI {
 	public List<Bid> getListingBids(@NotNull Listing listing);
 	
 	public Bid makeBid(@NotNull Listing listing, @NotNull Party party, @NotNull Double amount);
+	
+	public Bid setWinningBid(Listing listing);
 }

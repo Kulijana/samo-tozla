@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import rs.manhut.entities.Bid;
 import rs.manhut.entities.Listing;
 import rs.manhut.entities.Party;
 
@@ -30,4 +31,6 @@ public interface ListingDAOI {
 										Boolean active);
 	
 	public List<Listing> getPartyListings(@NotNull Party party);
+	
+	public Bid stopAuction(Listing listing, Party party);
 }

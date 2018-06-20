@@ -1,5 +1,6 @@
 package rs.manhut;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,28 +24,36 @@ public class BidComponent extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridy = 0;
 		c.weightx = 0.4;
 		c.weighty = 1;
-		//this.add(new JLabel(bid.getBidder().getFirstName() + " " + bid.getBidder().getLastName()), c);
-		this.add(new JLabel("John Doe"), c);
+		c.insets = new Insets(0, 10, 0, 0);
+		JLabel nameLabel = new JLabel(bid.getBidder().getFirstName() + " " + bid.getBidder().getLastName());
+		nameLabel.setPreferredSize(new Dimension(200, 30));
+		this.add(nameLabel, c);
 		
 		c.anchor = GridBagConstraints.LINE_START;
 		c.gridx = 1;
-		c.insets = new Insets(0, 0, 0, 0);
 		c.weightx = 0.4;
-		this.add(new JLabel(this.getBidDate()), c);
+		c.insets = new Insets(0, 0, 0, 0);
+		JLabel datelabel = new JLabel(this.getBidDate());
+		datelabel.setPreferredSize(new Dimension(200, 30));
+		this.add(datelabel, c);
 		
 		c.weightx = 0.2;
-		c.insets = new Insets(0, 0, 0, 0);
-		c.anchor = GridBagConstraints.LINE_START;
-		c.gridx = 3;
-		this.add(new JLabel(String.format("%9.2f", bid.getAmount())), c);
+		c.anchor = GridBagConstraints.LINE_END;
+		c.gridx = 2;
+		c.insets = new Insets(0, 0, 0, 10);
+		JLabel amountLabel = new JLabel(String.format("%.2f", bid.getAmount()));
+		amountLabel.setPreferredSize(new Dimension(100, 30));
+		this.add(amountLabel, c);
+		
+		if(bid.isWinning())
+			this.setBackground(Color.CYAN);
 	}
 	
 	private String getBidDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-		return sdf.format(new Date());
+		return sdf.format(bid.getCreatedOn());
 	}
 }

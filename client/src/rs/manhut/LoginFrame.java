@@ -160,7 +160,7 @@ public class LoginFrame extends JFrame {
 				if(!l.isEmpty()) {
 					JFrame frame = new JFrame();
 					frame.setSize(1600, 900);
-					frame.add(new ListingPanel(party, l.get(0), ctx));
+					frame.add(new ListingPanel(party, l.get(2), ctx));
 					frame.setVisible(true);
 				}
 			} else {

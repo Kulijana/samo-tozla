@@ -2,6 +2,7 @@ package rs.manhut.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -38,6 +39,9 @@ public class Bid implements Serializable {
 	
 	@Column(name="WINNING")
 	private boolean winning;
+	
+	@Column(name="CREATED_ON")
+	private Date createdOn; 
 
 	public Bid() {
 		super();
@@ -86,5 +90,15 @@ public class Bid implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+	
+	
    
 }

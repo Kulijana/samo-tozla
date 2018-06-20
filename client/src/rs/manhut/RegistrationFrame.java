@@ -155,11 +155,12 @@ public class RegistrationFrame extends JFrame implements ActionListener {
     			desc = descriptionTextField.getText();
     	try {
     		Party p = this.getPartyDAO().register(email, password, firstName, lastName, desc, "NotBlank");
-			this.showSuccessDialog();
+    		if(p != null)
+    			this.showSuccessDialog();
+    		else
+        		JOptionPane.showMessageDialog(this, "A user with the same email exists.", "Could not register", JOptionPane.ERROR_MESSAGE);
     	} catch (NamingException ne) {
     		ne.printStackTrace();
-    	} catch (IllegalArgumentException iae) {
-    		JOptionPane.showMessageDialog(this, iae.getMessage(), "Could not register", JOptionPane.ERROR_MESSAGE);
     	}
     }
     
